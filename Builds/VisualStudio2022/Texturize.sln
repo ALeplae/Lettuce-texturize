@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio Version 17
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Texturize - Standalone Plugin", "Texturize_StandalonePlugin.vcxproj", "{6B6A1171-2A3B-AB72-EBB5-21E2D37D87CD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4E8487EC-73AE-2FA2-2337-1308D3F18AF4} = {4E8487EC-73AE-2FA2-2337-1308D3F18AF4}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Texturize - VST3", "Texturize_VST3.vcxproj", "{9304EB4E-E518-2C1A-2EAD-D5AFDCC68437}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4E8487EC-73AE-2FA2-2337-1308D3F18AF4} = {4E8487EC-73AE-2FA2-2337-1308D3F18AF4}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Texturize - Shared Code", "Texturize_SharedCode.vcxproj", "{4E8487EC-73AE-2FA2-2337-1308D3F18AF4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9304EB4E-E518-2C1A-2EAD-D5AFDCC68437}.Debug|x64.ActiveCfg = Debug|x64
+		{9304EB4E-E518-2C1A-2EAD-D5AFDCC68437}.Debug|x64.Build.0 = Debug|x64
+		{9304EB4E-E518-2C1A-2EAD-D5AFDCC68437}.Release|x64.ActiveCfg = Release|x64
+		{9304EB4E-E518-2C1A-2EAD-D5AFDCC68437}.Release|x64.Build.0 = Release|x64
+		{6B6A1171-2A3B-AB72-EBB5-21E2D37D87CD}.Debug|x64.ActiveCfg = Debug|x64
+		{6B6A1171-2A3B-AB72-EBB5-21E2D37D87CD}.Debug|x64.Build.0 = Debug|x64
+		{6B6A1171-2A3B-AB72-EBB5-21E2D37D87CD}.Release|x64.ActiveCfg = Release|x64
+		{6B6A1171-2A3B-AB72-EBB5-21E2D37D87CD}.Release|x64.Build.0 = Release|x64
+		{4E8487EC-73AE-2FA2-2337-1308D3F18AF4}.Debug|x64.ActiveCfg = Debug|x64
+		{4E8487EC-73AE-2FA2-2337-1308D3F18AF4}.Debug|x64.Build.0 = Debug|x64
+		{4E8487EC-73AE-2FA2-2337-1308D3F18AF4}.Release|x64.ActiveCfg = Release|x64
+		{4E8487EC-73AE-2FA2-2337-1308D3F18AF4}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
