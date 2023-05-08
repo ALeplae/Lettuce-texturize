@@ -26,6 +26,7 @@ public:
     void resized() override;
 
 private:
+    void openButtonClicked();
     void sliderValueChanged(juce::Slider* slider) override;
 
     // This reference is provided as a quick way for your editor to
@@ -33,6 +34,8 @@ private:
     TexturizeAudioProcessor& audioProcessor;
 
     juce::Slider inputVolume; //[1]
+
+    juce::TextButton searchButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TexturizeAudioProcessorEditor)
 };
