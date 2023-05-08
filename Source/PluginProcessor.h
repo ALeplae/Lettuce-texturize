@@ -19,6 +19,7 @@ class TexturizeAudioProcessor  : public juce::AudioProcessor
                             #endif
 {
 public:
+    float inputVel;
     //==============================================================================
     TexturizeAudioProcessor();
     ~TexturizeAudioProcessor() override;
