@@ -26,7 +26,15 @@ public:
     void resized() override;
 
 private:
+
     void openButtonClicked();
+    
+    juce::AudioFormatManager formatManager;
+    std::unique_ptr<juce::AudioFormatReaderSource> playSource;
+    
+    std::unique_ptr<juce::FileChooser> fileChooser;
+    juce::TextButton searchButton;
+
     void sliderValueChanged(juce::Slider* slider) override;
 
     // This reference is provided as a quick way for your editor to
@@ -34,8 +42,6 @@ private:
     TexturizeAudioProcessor& audioProcessor;
 
     juce::Slider inputVolume; //[1]
-
-    juce::TextButton searchButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TexturizeAudioProcessorEditor)
 };
