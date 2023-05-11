@@ -26,14 +26,19 @@ public:
     void resized() override;
 
 private:
-
     void openButtonClicked();
-    
+    void playButtonClicked();
+    void stopButtonClicked();
+
+
     juce::AudioFormatManager formatManager;
     std::unique_ptr<juce::AudioFormatReaderSource> playSource;
     
     std::unique_ptr<juce::FileChooser> fileChooser;
+    
     juce::TextButton searchButton;
+    juce::TextButton playButton;
+    juce::TextButton stopButton;
 
     void sliderValueChanged(juce::Slider* slider) override;
 

@@ -60,8 +60,21 @@ public:
     juce::File root, savedFile;
 
 private:
-    
-
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TexturizeAudioProcessor)
+
+
+public:
+    juce::AudioTransportSource transport;
+
+    enum TransportState
+    {
+        Stopped,
+        Starting,
+        Stopping
+    };
+
+    TransportState state;
+    
+    void transportStateChanged(TransportState newState);
 };
