@@ -19,10 +19,14 @@ TexturizeAudioProcessor::TexturizeAudioProcessor()
 #endif
 		.withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-	),
-	state(Stopped)
+	)
 #endif
 {
+	//add amount of voices to synthesizer
+	for (int i; i < mNumVoices; i++) 
+	{
+		mSampler.addVoice(new juce::SamplerVoice());
+	}
 }
 
 TexturizeAudioProcessor::~TexturizeAudioProcessor()
@@ -94,7 +98,7 @@ void TexturizeAudioProcessor::changeProgramName(int index, const juce::String& n
 //==============================================================================
 void TexturizeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-	transport.prepareToPlay(samplesPerBlock, sampleRate);
+
 }
 
 void TexturizeAudioProcessor::releaseResources()
@@ -161,9 +165,9 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
 		{
 			channelData[sample] *= inputVel;
-
+ 
 		}
-	}
+	} 
 }
 
 //==============================================================================
@@ -191,32 +195,16 @@ void TexturizeAudioProcessor::setStateInformation(const void* data, int sizeInBy
 	// whose contents will have been created by the getStateInformation() call.
 }
 
+void TexturizeAudioProcessor::fileSetup(juce::File file) 
+{
+	savedFile = file;
+	root = file.getParentDirectory().getFullPathName();
+
+}
+
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
 	return new TexturizeAudioProcessor();
-}
-
-void TexturizeAudioProcessor::transportStateChanged(TransportState newState)
-{
-	if (newState != state)
-	{
-		state = newState;
-
-		switch (state)
-		{
-		case TexturizeAudioProcessor::Stopped:
-			transport.setPosition(0.0);
-			break;
-		case TexturizeAudioProcessor::Starting:
-			transport.start();
-			break;
-		case TexturizeAudioProcessor::Stopping:
-			transport.stop();
-			break;
-		default:
-			break;
-		}
-	}
 }

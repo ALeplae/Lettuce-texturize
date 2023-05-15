@@ -11,15 +11,16 @@
 
 //==============================================================================
 TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProcessor& p)
-	: AudioProcessorEditor(&p), audioProcessor(p), searchButton("search audio file"), playButton("play"),  stopButton("stop")
+	: AudioProcessorEditor(&p), audioProcessor(p), playButton("play"),  stopButton("stop")
 {
 	// editor's size
 	setSize(938, 745);
 
-	searchButton.onClick = [this] { openButtonClicked(); };
-	addAndMakeVisible(&searchButton);
 
-	formatManager.registerBasicFormats();
+	mLoadButton.onClick = [this] { loadFile(); };
+	addAndMakeVisible(&mLoadButton);
+
+	mFormatManager.registerBasicFormats();
 
 	playButton.onClick = [this] { playButtonClicked(); };
 	playButton.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
@@ -68,7 +69,7 @@ void TexturizeAudioProcessorEditor::resized()
 {
 	// This is generally where you'll want to lay out the positions of any
 	// subcomponents in your editor..
-	searchButton.setBounds(100, 10, getWidth() - 200, 30);
+	mLoadButton.setBounds(100, 10, getWidth() - 200, 30);
 	playButton.setBounds(100, 50, 50, 30);
 	stopButton.setBounds(150, 50, 50, 30);
 	
@@ -81,7 +82,7 @@ void TexturizeAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 	audioProcessor.inputVel = inputVolume.getValue();
 }
 
-void TexturizeAudioProcessorEditor::openButtonClicked()
+void TexturizeAudioProcessorEditor::loadFile()
 {
 	//choose a file
 	fileChooser = std::make_unique<juce::FileChooser>("Choose a WAV, mp3 or AIF file",
@@ -97,21 +98,8 @@ void TexturizeAudioProcessorEditor::openButtonClicked()
 			//if chosen right:
 			if (result.getFileExtension() == ".mp3" || result.getFileExtension() == ".wav" || result.getFileExtension() == ".aif" || result.getFileExtension() == ".aiff")
 			{
-				audioProcessor.savedFile = result;
-				audioProcessor.root = result.getParentDirectory().getFullPathName();
-
-				//read file
-				juce::AudioFormatReader* reader = formatManager.createReaderFor(audioProcessor.savedFile);
-
-				//get ready to play
-				std::unique_ptr<juce::AudioFormatReaderSource> tempSource(new juce::AudioFormatReaderSource(reader, true));
-
-				
-				audioProcessor.transport.setSource(tempSource.get());
-
-				playSource.reset(tempSource.release());
-				
-				searchButton.setButtonText(result.getFullPathName());
+				audioProcessor.fileSetup(result);
+				mLoadButton.setButtonText(result.getFileName());
 			}
 			else
 			{
@@ -122,15 +110,11 @@ void TexturizeAudioProcessorEditor::openButtonClicked()
 
 void TexturizeAudioProcessorEditor::playButtonClicked() 
 {
-	stopButton.setEnabled(true);
-	playButton.setEnabled(false);
-	audioProcessor.transportStateChanged(audioProcessor.Starting);
+
 }
 
 void TexturizeAudioProcessorEditor::stopButtonClicked()
 {
-	stopButton.setEnabled(false);
-	playButton.setEnabled(true);
-	audioProcessor.transportStateChanged(audioProcessor.Stopping);
+
 }
 

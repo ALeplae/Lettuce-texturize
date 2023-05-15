@@ -57,24 +57,18 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+
+
+    void fileSetup (juce::File result);
+
     juce::File root, savedFile;
 
 private:
+    //-----------------new attempt-------------------
+    juce::Synthesiser mSampler;
+    const int mNumVoices{ 3 };
+
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TexturizeAudioProcessor)
-
-
-public:
-    juce::AudioTransportSource transport;
-
-    enum TransportState
-    {
-        Stopped,
-        Starting,
-        Stopping
-    };
-
-    TransportState state;
-    
-    void transportStateChanged(TransportState newState);
 };
