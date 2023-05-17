@@ -20,7 +20,7 @@ TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProce
 	mLoadButton.onClick = [this] { loadFile(); };
 	addAndMakeVisible(&mLoadButton);
 
-	mFormatManager.registerBasicFormats();
+
 
 	playButton.onClick = [this] { playButtonClicked(); };
 	playButton.setColour(juce::TextButton::buttonColourId, juce::Colours::green);

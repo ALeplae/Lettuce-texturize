@@ -22,8 +22,10 @@ TexturizeAudioProcessor::TexturizeAudioProcessor()
 	)
 #endif
 {
+	mFormatManager.registerBasicFormats();
+
 	//add amount of voices to synthesizer
-	for (int i; i < mNumVoices; i++) 
+	for (int i{0}; i < mNumVoices; i++)
 	{
 		mSampler.addVoice(new juce::SamplerVoice());
 	}
@@ -31,6 +33,7 @@ TexturizeAudioProcessor::TexturizeAudioProcessor()
 
 TexturizeAudioProcessor::~TexturizeAudioProcessor()
 {
+	mFormatReader = nullptr;
 }
 
 //==============================================================================
@@ -98,7 +101,7 @@ void TexturizeAudioProcessor::changeProgramName(int index, const juce::String& n
 //==============================================================================
 void TexturizeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-
+	mSampler.setCurrentPlaybackSampleRate(sampleRate);
 }
 
 void TexturizeAudioProcessor::releaseResources()
@@ -139,35 +142,21 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	auto totalNumInputChannels = getTotalNumInputChannels();
 	auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-	// In case we have more outputs than inputs, this code clears any output
-	// channels that didn't contain input data, (because these aren't
-	// guaranteed to be empty - they may contain garbage).
-	// This is here to avoid people getting screaming feedback
-	// when they first compile a plugin, but obviously you don't need to keep
-	// this code if your algorithm always overwrites all the output channels.
-	
+	// code that deletes unnecesary audio outputs if the amount of outputs > amount of inputs
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
 
-	// This is the place where you'd normally do the guts of your plugin's
+	// rendering of the sampler
+	mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+
+
 	// audio processing...
-	// Make sure to reset the state if your inner loop is processing
-	// the samples and the outer loop is handling the channels.
-	// Alternatively, you can process the samples with the channels
-	// interleaved by keeping the same state.
-
-
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
-		// ..do something to the data...
+		// do something to the data here...
 
-		for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
-		{
-			channelData[sample] *= inputVel;
- 
-		}
-	} 
+	}
 }
 
 //==============================================================================
@@ -181,7 +170,7 @@ juce::AudioProcessorEditor* TexturizeAudioProcessor::createEditor()
 	return new TexturizeAudioProcessorEditor(*this);
 }
 
-//==============================================================================
+//============================================================================== 
 void TexturizeAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
 	// You should use this method to store your parameters in the memory block.
@@ -197,8 +186,16 @@ void TexturizeAudioProcessor::setStateInformation(const void* data, int sizeInBy
 
 void TexturizeAudioProcessor::fileSetup(juce::File file) 
 {
-	savedFile = file;
 	root = file.getParentDirectory().getFullPathName();
+	savedFile = file;
+
+	mFormatReader = mFormatManager.createReaderFor(file);
+	
+
+	juce::BigInteger range;
+	range.setRange(0, 128, true);
+
+	mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1, 0.1,10.0));
 
 }
 

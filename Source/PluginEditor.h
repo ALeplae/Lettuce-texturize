@@ -41,7 +41,7 @@ private:
     void stopButtonClicked();
 
 
-    juce::AudioFormatManager mFormatManager;
+
     std::unique_ptr<juce::AudioFormatReaderSource> playSource;
     
     std::unique_ptr<juce::FileChooser> fileChooser;
