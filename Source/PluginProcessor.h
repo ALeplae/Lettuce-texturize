@@ -61,8 +61,8 @@ public:
 
     void fileSetup (juce::File result);
 
-    juce::File root, savedFile;
 
+    juce::File root, savedFile;
 
 private:
     juce::Synthesiser mSampler;

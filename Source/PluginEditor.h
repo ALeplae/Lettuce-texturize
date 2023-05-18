@@ -15,7 +15,8 @@
 /**
 */
 class TexturizeAudioProcessorEditor  : public juce::AudioProcessorEditor, 
-                                        private juce::Slider::Listener
+                                       public juce::FileDragAndDropTarget,
+                                       private juce::Slider::Listener
 {
 public:
     TexturizeAudioProcessorEditor (TexturizeAudioProcessor&);
@@ -24,18 +25,19 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    
+    bool isInterestedInFileDrag(const juce::StringArray& files) override;
+    void filesDropped(const juce::StringArray& files, int x, int y) override;
 
 private:
     juce::TextButton mLoadButton;
     void loadFile();
+    void loadFile(const juce::String& path);
 
 
+    void renameLoadButton();
 
 
-
-
-
-    //-----------------old attempt-------------------
 
     void playButtonClicked();
     void stopButtonClicked();

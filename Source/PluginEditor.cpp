@@ -16,11 +16,9 @@ TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProce
 	// editor's size
 	setSize(938, 745);
 
-
 	mLoadButton.onClick = [this] { loadFile(); };
+	renameLoadButton();
 	addAndMakeVisible(&mLoadButton);
-
-
 
 	playButton.onClick = [this] { playButtonClicked(); };
 	playButton.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
@@ -31,6 +29,7 @@ TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProce
 	stopButton.setColour(juce::TextButton::buttonColourId, juce::Colours::red);
 	stopButton.setEnabled(false);
 	addAndMakeVisible(&stopButton);
+
 
 
 	//slider object parameters
@@ -98,14 +97,64 @@ void TexturizeAudioProcessorEditor::loadFile()
 			//if chosen right:
 			if (result.getFileExtension() == ".mp3" || result.getFileExtension() == ".wav" || result.getFileExtension() == ".aif" || result.getFileExtension() == ".aiff")
 			{
+				audioProcessor.root = result.getParentDirectory().getFullPathName();
+				audioProcessor.savedFile = result;
+				renameLoadButton();
+
 				audioProcessor.fileSetup(result);
-				mLoadButton.setButtonText(result.getFileName());
 			}
 			else
 			{
 				DBG("you messed up choosing a file :(");
 			}
 		});
+}
+
+void TexturizeAudioProcessorEditor::loadFile(const juce::String& path)
+{
+	auto file = juce::File(path);
+	audioProcessor.fileSetup(file);
+	audioProcessor.root = file.getParentDirectory().getFullPathName();
+	audioProcessor.savedFile = file;
+	renameLoadButton();
+}
+
+bool TexturizeAudioProcessorEditor::isInterestedInFileDrag (const juce::StringArray& files)
+{
+	for (auto file : files)
+	{
+		if (file.contains(".mp3") || file.contains(".wav") || file.contains(".aif") || file.contains(".aiff")) 
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void TexturizeAudioProcessorEditor::filesDropped(const juce::StringArray& files, int x, int y)
+{
+	for (auto file : files) 
+	{
+		if (isInterestedInFileDrag(file)) 
+		{
+			loadFile(file);
+		}
+	}
+}
+
+
+
+void TexturizeAudioProcessorEditor::renameLoadButton() 
+{
+	if (audioProcessor.savedFile.getFileName()!="")
+	{
+		mLoadButton.setButtonText(audioProcessor.savedFile.getFileName());
+	}
+	else
+	{
+		mLoadButton.setButtonText("please load an mp3, WAV or AIF file");
+	}
 }
 
 void TexturizeAudioProcessorEditor::playButtonClicked() 
@@ -117,4 +166,3 @@ void TexturizeAudioProcessorEditor::stopButtonClicked()
 {
 
 }
-

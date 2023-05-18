@@ -186,8 +186,7 @@ void TexturizeAudioProcessor::setStateInformation(const void* data, int sizeInBy
 
 void TexturizeAudioProcessor::fileSetup(juce::File file) 
 {
-	root = file.getParentDirectory().getFullPathName();
-	savedFile = file;
+	mSampler.clearSounds();
 
 	mFormatReader = mFormatManager.createReaderFor(file);
 	
@@ -195,8 +194,7 @@ void TexturizeAudioProcessor::fileSetup(juce::File file)
 	juce::BigInteger range;
 	range.setRange(0, 128, true);
 
-	mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 60, 0.1, 0.1,10.0));
-
+	mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 84, 0.1, 0.1,10.0));
 }
 
 //==============================================================================
