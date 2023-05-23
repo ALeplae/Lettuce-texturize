@@ -25,7 +25,7 @@ TexturizeAudioProcessor::TexturizeAudioProcessor()
 	mFormatManager.registerBasicFormats();
 
 	//add amount of voices to synthesizer
-	for (int i{0}; i < mNumVoices; i++)
+	for (int i{ 0 }; i < mNumVoices; i++)
 	{
 		mSampler.addVoice(new juce::SamplerVoice());
 	}
@@ -184,17 +184,22 @@ void TexturizeAudioProcessor::setStateInformation(const void* data, int sizeInBy
 	// whose contents will have been created by the getStateInformation() call.
 }
 
-void TexturizeAudioProcessor::fileSetup(juce::File file) 
+void TexturizeAudioProcessor::fileSetup(juce::File file)
 {
 	mSampler.clearSounds();
 
 	mFormatReader = mFormatManager.createReaderFor(file);
-	
+
+	// setting up waveform visual
+	auto sampleLength = static_cast<int>(mFormatReader->lengthInSamples);
+	mWaveForm.setSize(1, sampleLength);
+	mFormatReader->read(&mWaveForm, 0, sampleLength, 0, true, false);
+
 
 	juce::BigInteger range;
 	range.setRange(0, 128, true);
 
-	mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 84, 0.1, 0.1,10.0));
+	mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 84, 0.1, 0.1, 10.0));
 }
 
 //==============================================================================

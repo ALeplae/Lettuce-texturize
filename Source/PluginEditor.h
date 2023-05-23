@@ -34,10 +34,10 @@ private:
     void loadFile();
     void loadFile(const juce::String& path);
 
+	void renameLoadButton();
 
-    void renameLoadButton();
-
-
+    std::vector<float> mAudioPoints;
+    bool mShouldBePainting{ false };
 
     void playButtonClicked();
     void stopButtonClicked();
