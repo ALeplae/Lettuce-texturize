@@ -13,40 +13,42 @@
 TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProcessor& p)
 	: AudioProcessorEditor(&p), audioProcessor(p), playButton("play"), stopButton("stop")
 {
-	
-	// editor's size
 	setSize(938, 745);
 
 	mLoadButton.onClick = [this] { loadFile(); };
 	renameLoadButton();
-	//addAndMakeVisible(&mLoadButton);
+	addAndMakeVisible(&mLoadButton);
 
 	playButton.onClick = [this] { playButtonClicked(); };
 	playButton.setColour(juce::TextButton::buttonColourId, juce::Colours::green);
 	playButton.setEnabled(true);
-	//addAndMakeVisible(&playButton);
+	addAndMakeVisible(&playButton);
 
 	stopButton.onClick = [this] { stopButtonClicked(); };
 	stopButton.setColour(juce::TextButton::buttonColourId, juce::Colours::red);
 	stopButton.setEnabled(false);
-	//addAndMakeVisible(&stopButton);
+	addAndMakeVisible(&stopButton);
 
 
+	mAttackSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+	mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	mAttackSlider.setRange(0.0f, 5.0f, 0.01f);
+	addAndMakeVisible(mAttackSlider);
 
-	//slider object parameters
-	inputVolume.setSliderStyle(juce::Slider::LinearVertical);
-	inputVolume.setRange(0.0, 1.2, 0.01);
-	inputVolume.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
-	inputVolume.setPopupDisplayEnabled(true, false, this);
-	inputVolume.setTextValueSuffix(" Volume");
-	inputVolume.setValue(1.0);
+	mSustainSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+	mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	mSustainSlider.setRange(0.0f, 5.0f, 0.01f);
+	addAndMakeVisible(mSustainSlider);
 
-	//adding slider to editor
-	//addAndMakeVisible(&inputVolume);
+	mDecaySlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+	mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	mDecaySlider.setRange(0.0f, 5.0f, 0.01f);
+	addAndMakeVisible(mDecaySlider);
 
-	//adding listener to the slider
-	inputVolume.addListener(this);
-	
+	mReleaseSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+	mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	mReleaseSlider.setRange(0.0f, 5.0f, 0.01f);
+	addAndMakeVisible(mReleaseSlider);
 }
 
 TexturizeAudioProcessorEditor::~TexturizeAudioProcessorEditor()
@@ -57,51 +59,26 @@ TexturizeAudioProcessorEditor::~TexturizeAudioProcessorEditor()
 void TexturizeAudioProcessorEditor::paint(juce::Graphics& g)
 {
 	// (Our component is opaque, so we must completely fill the background with a solid colour)
-	//g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-
-	g.fillAll(juce::Colours::black);
+	g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 	g.setColour(juce::Colours::white);
 
-	if (mShouldBePainting) 
+	if (mShouldBePainting)
 	{
 		juce::Path p;
-		p.clear();
+		mAudioPoints.clear();
 
-		//int waveformWidth{ 200 };
-		//int waveformHeight{ 100 };
+		int waveformWidth{ mLoadButton.getWidth() - playButton.getWidth() - stopButton.getWidth() };
+		int waveformHeight{ playButton.getHeight() * 2 };
+		int waveformXPos{ stopButton.getX() + stopButton.getWidth() };
+		int waveformYPos{ getHeight() / 2 };
 
-		auto waveform = audioProcessor.getWaveForm();
-		auto ratio = waveform.getNumSamples() / getWidth();
-		auto buffer = waveform.getReadPointer(0);
+		p = paintWaveform(p, waveformXPos, waveformYPos, waveformWidth, waveformHeight);
 
-		//scale audio file to window on x axis
-		for (int sample = 0; sample < waveform.getNumSamples(); sample += ratio)
-		{
-			mAudioPoints.push_back (buffer[sample]);
-		}
-
-		p.startNewSubPath(0, getHeight() / 2);
-
-		//scale on y axis
-		for (int sample = 0; sample < mAudioPoints.size(); ++sample)
-		{
-			auto point = juce::jmap<float> (mAudioPoints[sample], -1.0f, 1.0f, getHeight(), 0);
-			p.lineTo(sample, point);
-		}
-
-		g.strokePath(p, juce::PathStrokeType(2));
+		g.strokePath(p, juce::PathStrokeType(1));
+		p.closeSubPath();
 
 		mShouldBePainting = false;
 	}
-
-
-	/*
-	//g.fillAll(juce::Colours::dimgrey);
-
-	g.setColour(juce::Colours::white);
-	g.setFont(15.0f);
-	g.drawFittedText("Lettuce texturize", 0, 0, getWidth(), 30, juce::Justification::centred, 1);
-	*/
 }
 
 void TexturizeAudioProcessorEditor::resized()
@@ -112,13 +89,7 @@ void TexturizeAudioProcessorEditor::resized()
 	playButton.setBounds(100, 50, 50, 30);
 	stopButton.setBounds(150, 50, 50, 30);
 
-	inputVolume.setBounds(40, 30, 20, getHeight() - 60);
-
-}
-
-void TexturizeAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
-{
-	audioProcessor.inputVel = inputVolume.getValue();
+	mAttackSlider.setBounds(getWidth() / 2, getHeight() / 2, 100, 100);
 }
 
 void TexturizeAudioProcessorEditor::loadFile()
@@ -142,12 +113,17 @@ void TexturizeAudioProcessorEditor::loadFile()
 				renameLoadButton();
 
 				audioProcessor.fileSetup(result);
+
+				mShouldBePainting = true;
+				repaint();
 			}
 			else
 			{
 				DBG("you messed up choosing a file :(");
 			}
 		});
+
+
 }
 
 void TexturizeAudioProcessorEditor::loadFile(const juce::String& path)
@@ -179,12 +155,37 @@ void TexturizeAudioProcessorEditor::filesDropped(const juce::StringArray& files,
 		if (isInterestedInFileDrag(file))
 		{
 			loadFile(file);
+			DBG("file is loaded");
+
 			mShouldBePainting = true;
+			repaint();
 		}
 	}
 }
 
+juce::Path TexturizeAudioProcessorEditor::paintWaveform(juce::Path p, int x, int y, int width, int height)
+{
+	auto waveform = audioProcessor.getWaveForm();
+	auto ratio = waveform.getNumSamples() / width;
+	auto buffer = waveform.getReadPointer(0);
 
+	//scale audio file to window on x axis
+	for (int sample = 0; sample < waveform.getNumSamples(); sample += ratio)
+	{
+		mAudioPoints.push_back(buffer[sample]);
+	}
+
+	p.startNewSubPath(x, y);
+
+	//scale on y axis
+	for (int sample = 0; sample < mAudioPoints.size(); ++sample)
+	{
+		auto point = juce::jmap<float>(mAudioPoints[sample], -1.0f, 1.0f, height, -height);
+		p.lineTo(sample, point + y);
+	}
+
+	return p;
+}
 
 void TexturizeAudioProcessorEditor::renameLoadButton()
 {

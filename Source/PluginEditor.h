@@ -15,8 +15,7 @@
 /**
 */
 class TexturizeAudioProcessorEditor  : public juce::AudioProcessorEditor, 
-                                       public juce::FileDragAndDropTarget,
-                                       private juce::Slider::Listener
+                                       public juce::FileDragAndDropTarget                                    
 {
 public:
     TexturizeAudioProcessorEditor (TexturizeAudioProcessor&);
@@ -42,27 +41,19 @@ private:
     void playButtonClicked();
     void stopButtonClicked();
 
-
-
+    juce::Path paintWaveform(juce::Path p, int x, int y, int width, int height);
+ 
     std::unique_ptr<juce::AudioFormatReaderSource> playSource;
-    
     std::unique_ptr<juce::FileChooser> fileChooser;
-    
 
     juce::TextButton playButton;
     juce::TextButton stopButton;
 
-
-
-
-    //-----------------slider test-------------------
-    void sliderValueChanged(juce::Slider* slider) override;
+    juce::Slider mAttackSlider, mDecaySlider, mSustainSlider, mReleaseSlider;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     TexturizeAudioProcessor& audioProcessor;
-
-    juce::Slider inputVolume; //[1]
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TexturizeAudioProcessorEditor)
 };
