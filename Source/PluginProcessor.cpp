@@ -19,10 +19,11 @@ TexturizeAudioProcessor::TexturizeAudioProcessor()
 #endif
 		.withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-	)
+	), mAPVTS (*this, nullptr, "PARAMETERS", createParameters())
 #endif
 {
 	mFormatManager.registerBasicFormats();
+	mAPVTS.state.addListener(this);
 
 	//add amount of voices to synthesizer
 	for (int i{ 0 }; i < mNumVoices; i++)
@@ -102,6 +103,7 @@ void TexturizeAudioProcessor::changeProgramName(int index, const juce::String& n
 void TexturizeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	mSampler.setCurrentPlaybackSampleRate(sampleRate);
+	updateADSR();
 }
 
 void TexturizeAudioProcessor::releaseResources()
@@ -145,6 +147,11 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	// code that deletes unnecesary audio outputs if the amount of outputs > amount of inputs
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
+
+	if (mShouldUpdate)
+	{
+		updateADSR();
+	}
 
 	// rendering of the sampler
 	mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
@@ -200,6 +207,43 @@ void TexturizeAudioProcessor::fileSetup(juce::File file)
 	range.setRange(0, 128, true);
 
 	mSampler.addSound(new juce::SamplerSound("Sample", *mFormatReader, range, 84, 0.1, 0.1, 10.0));
+
+	updateADSR();
+}
+
+void TexturizeAudioProcessor::updateADSR() 
+{
+	mADSRParams.attack = mAPVTS.getRawParameterValue("ATTACK")->load();
+	mADSRParams.decay = mAPVTS.getRawParameterValue("DECAY")->load();
+	mADSRParams.sustain = mAPVTS.getRawParameterValue("SUSTAIN")->load();
+	mADSRParams.release = mAPVTS.getRawParameterValue("RELEASE")->load();
+
+
+	for (int i = 0; i < mSampler.getNumSounds(); ++i)
+	{
+		if (auto sound = dynamic_cast<juce::SamplerSound*>(mSampler.getSound(i).get()))
+		{
+			sound->setEnvelopeParameters(mADSRParams);
+		}
+	}
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::createParameters()
+{
+	std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
+
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", 0.0f, 5.0f, 0.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", 0.0f, 3.0f, 2.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 2.0f));
+
+	return { parameters.begin(), parameters.end() };
+
+}
+
+void TexturizeAudioProcessor::valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& poperty) 
+{
+	mShouldUpdate = true;
 }
 
 //==============================================================================

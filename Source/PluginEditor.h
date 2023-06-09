@@ -15,7 +15,7 @@
 /**
 */
 class TexturizeAudioProcessorEditor  : public juce::AudioProcessorEditor, 
-                                       public juce::FileDragAndDropTarget                                    
+                                       public juce::FileDragAndDropTarget
 {
 public:
     TexturizeAudioProcessorEditor (TexturizeAudioProcessor&);
@@ -50,6 +50,12 @@ private:
     juce::TextButton stopButton;
 
     juce::Slider mAttackSlider, mDecaySlider, mSustainSlider, mReleaseSlider;
+    juce::Label mAttackLabel, mDecayLabel, mSustainLabel, mReleaseLabel;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mAttackAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDecayAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mSustainAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mReleaseAttachment;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

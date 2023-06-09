@@ -29,29 +29,63 @@ TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProce
 	stopButton.setEnabled(false);
 	addAndMakeVisible(&stopButton);
 
+	//envelope dials
+	const float fontSize{ 20.0f };
 
+	//Att.
 	mAttackSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
-	mAttackSlider.setRange(0.0f, 5.0f, 0.01f);
 	addAndMakeVisible(mAttackSlider);
+	
+	mAttackLabel.setFont(fontSize);
+	mAttackLabel.setText("Attack", juce::NotificationType::dontSendNotification);
+	mAttackLabel.setJustificationType(juce::Justification::centredTop);
+	mAttackLabel.attachToComponent(&mAttackSlider, false);
 
-	mSustainSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
-	mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
-	mSustainSlider.setRange(0.0f, 5.0f, 0.01f);
-	addAndMakeVisible(mSustainSlider);
+	mAttackAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+		audioProcessor.getAPVTS(), "ATTACK", mAttackSlider);
 
+	//Dec.
 	mDecaySlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
-	mDecaySlider.setRange(0.0f, 5.0f, 0.01f);
+	mDecaySlider.setRange(0.0f, 3.0f, 0.01f);
 	addAndMakeVisible(mDecaySlider);
+	mDecayLabel.setFont(fontSize);
+	mDecayLabel.setText("Decay", juce::NotificationType::dontSendNotification);
+	mDecayLabel.setJustificationType(juce::Justification::centredTop);
+	mDecayLabel.attachToComponent(&mDecaySlider, false);
 
+	mDecayAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+		audioProcessor.getAPVTS(), "DECAY", mDecaySlider);
+
+	//Sus.
+	mSustainSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+	mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	mSustainSlider.setRange(0.0f, 1.0f, 0.01f);
+	addAndMakeVisible(mSustainSlider);
+	mSustainLabel.setFont(fontSize);
+	mSustainLabel.setText("Sustain", juce::NotificationType::dontSendNotification);
+	mSustainLabel.setJustificationType(juce::Justification::centredTop);
+	mSustainLabel.attachToComponent(&mSustainSlider, false);
+
+	mSustainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+		audioProcessor.getAPVTS(), "SUSTAIN", mSustainSlider);
+
+	//Rel.
 	mReleaseSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
 	mReleaseSlider.setRange(0.0f, 5.0f, 0.01f);
 	addAndMakeVisible(mReleaseSlider);
+	mReleaseLabel.setFont(fontSize);
+	mReleaseLabel.setText("Release", juce::NotificationType::dontSendNotification);
+	mReleaseLabel.setJustificationType(juce::Justification::centredTop);
+	mReleaseLabel.attachToComponent(&mReleaseSlider, false);
+
+	mReleaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+		audioProcessor.getAPVTS(), "RELEASE", mReleaseSlider);
 }
 
-TexturizeAudioProcessorEditor::~TexturizeAudioProcessorEditor()
+ TexturizeAudioProcessorEditor::~TexturizeAudioProcessorEditor()
 {
 }
 
@@ -89,7 +123,12 @@ void TexturizeAudioProcessorEditor::resized()
 	playButton.setBounds(100, 50, 50, 30);
 	stopButton.setBounds(150, 50, 50, 30);
 
-	mAttackSlider.setBounds(getWidth() / 2, getHeight() / 2, 100, 100);
+	
+	const int dialSize{ 100 };
+	mAttackSlider.setBounds(getWidth() / 2, getHeight() / 2, dialSize, dialSize);
+	mDecaySlider.setBounds(getWidth() / 2 + dialSize, getHeight() / 2, dialSize, dialSize);
+	mSustainSlider.setBounds(getWidth() / 2 + dialSize * 2, getHeight() / 2, dialSize, dialSize);
+	mReleaseSlider.setBounds(getWidth() / 2 + dialSize * 3, getHeight() / 2, dialSize, dialSize);
 }
 
 void TexturizeAudioProcessorEditor::loadFile()
