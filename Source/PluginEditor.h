@@ -10,12 +10,13 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "WaveForm.h"
+
 
 //==============================================================================
 /**
 */
-class TexturizeAudioProcessorEditor  : public juce::AudioProcessorEditor, 
-                                       public juce::FileDragAndDropTarget
+class TexturizeAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
     TexturizeAudioProcessorEditor (TexturizeAudioProcessor&);
@@ -24,30 +25,14 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    
-    bool isInterestedInFileDrag(const juce::StringArray& files) override;
-    void filesDropped(const juce::StringArray& files, int x, int y) override;
+    void renameLoadButton();
 
 private:
     juce::TextButton mLoadButton;
-    void loadFile();
-    void loadFile(const juce::String& path);
 
-	void renameLoadButton();
 
-    std::vector<float> mAudioPoints;
-    bool mShouldBePainting{ false };
+    WaveForm mWaveForm;
 
-    void playButtonClicked();
-    void stopButtonClicked();
-
-    juce::Path paintWaveform(juce::Path p, int x, int y, int width, int height);
- 
-    std::unique_ptr<juce::AudioFormatReaderSource> playSource;
-    std::unique_ptr<juce::FileChooser> fileChooser;
-
-    juce::TextButton playButton;
-    juce::TextButton stopButton;
 
     juce::Slider mAttackSlider, mDecaySlider, mSustainSlider, mReleaseSlider;
     juce::Label mAttackLabel, mDecayLabel, mSustainLabel, mReleaseLabel;

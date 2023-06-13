@@ -583,6 +583,9 @@
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
       <Filter>Texturize\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\WaveForm.cpp">
+      <Filter>Texturize\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>
     </ClCompile>
@@ -2911,6 +2914,9 @@
       <Filter>Texturize\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">
+      <Filter>Texturize\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WaveForm.h">
       <Filter>Texturize\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
