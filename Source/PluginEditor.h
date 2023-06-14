@@ -11,12 +11,14 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "WaveForm.h"
+#include "ADSRComponent.h"
 
 
 //==============================================================================
 /**
 */
-class TexturizeAudioProcessorEditor  : public juce::AudioProcessorEditor
+class TexturizeAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                       public juce::Timer
 {
 public:
     TexturizeAudioProcessorEditor (TexturizeAudioProcessor&);
@@ -25,22 +27,18 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    void renameLoadButton();
+
+    void timerCallback() override;
+
 
 private:
     juce::TextButton mLoadButton;
-
+    void clickLoadButton();
+    void renameLoadButton();
 
     WaveForm mWaveForm;
 
-
-    juce::Slider mAttackSlider, mDecaySlider, mSustainSlider, mReleaseSlider;
-    juce::Label mAttackLabel, mDecayLabel, mSustainLabel, mReleaseLabel;
-
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mAttackAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDecayAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mSustainAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mReleaseAttachment;
+    ADSRComponent mADSR;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

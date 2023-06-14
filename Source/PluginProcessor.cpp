@@ -153,6 +153,36 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		updateADSR();
 	}
 
+	juce::MidiMessage m;
+	juce::MidiBuffer::Iterator it{ midiMessages };
+	int sample;
+
+	while (it.getNextEvent(m, sample))
+	{
+		if (m.isNoteOn())
+		{
+			//note's on -> start the playhead
+			mIsNotePlayed = true;
+			mMidiNoteHz = m.getMidiNoteInHertz(m.getNoteNumber(), 440) / 1046.5f;
+			DBG(mMidiNoteHz);
+		}
+		else if (m.isNoteOff())
+		{
+			//stop the playhead
+			mIsNotePlayed = false;
+			mSampleCount = 0;
+		}
+	}
+
+	if(mIsNotePlayed)
+	{
+		mSampleCount = mSampleCount + buffer.getNumSamples() * mMidiNoteHz;
+	}
+	else
+	{
+		mSampleCount = 0;
+	}
+
 	// rendering of the sampler
 	mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
@@ -210,7 +240,6 @@ void TexturizeAudioProcessor::loadFile()
 				root = result.getParentDirectory().getFullPathName();
 				savedFile = result;
 				//renameLoadButton();
-
 				fileSetup(result);
 			}
 			else
@@ -218,8 +247,6 @@ void TexturizeAudioProcessor::loadFile()
 				DBG("you messed up choosing a file :(");
 			}
 		});
-
-
 }
 
 void TexturizeAudioProcessor::loadFile(const juce::String& path)

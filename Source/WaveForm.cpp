@@ -14,9 +14,7 @@
 //==============================================================================
 WaveForm::WaveForm(TexturizeAudioProcessor& p) : audioProcessor (p)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
-
+	
 }
 
 WaveForm::~WaveForm()
@@ -27,12 +25,15 @@ void WaveForm::paint (juce::Graphics& g)
 {
 	g.fillAll(juce::Colours::cadetblue.darker());
 
-	if (mShouldBePainting)
+	auto waveform = audioProcessor.getWaveForm();
+
+	if (waveform.getNumSamples() > 0)
 	{
+
 		juce::Path p;
 		mAudioPoints.clear();
 
-		auto waveform = audioProcessor.getWaveForm();
+
 		auto ratio = waveform.getNumSamples() / getWidth();
 		auto buffer = waveform.getReadPointer(0);
 
@@ -42,19 +43,25 @@ void WaveForm::paint (juce::Graphics& g)
 			mAudioPoints.push_back(buffer[sample]);
 		}
 
-		p.startNewSubPath(0, getHeight()/2);
+		p.startNewSubPath(0, getHeight() / 2);
 
 		//scale on y axis
 		for (int sample = 0; sample < mAudioPoints.size(); ++sample)
 		{
-			auto point = juce::jmap<float>(mAudioPoints[sample], -1.0f, 1.0f, getHeight() / 2, -getHeight() / 2);
+			auto point = juce::jmap<float>(mAudioPoints[sample], -1.0f, 1.0f, 0, getHeight());
 			p.lineTo(sample, point);
 		}
 
 		g.strokePath(p, juce::PathStrokeType(2));
 		p.closeSubPath();
 
-		mShouldBePainting = false;
+		auto playHeadPosition = juce::jmap<int> (audioProcessor.getSampleCount(), 0, 
+			audioProcessor.getWaveForm().getNumSamples(), 0, getWidth());
+
+		g.setColour(juce::Colours::white);
+		g.drawLine(playHeadPosition, 0, playHeadPosition, getHeight(), 2.0f);
+		g.setColour(juce::Colours::black.withAlpha (0.2f));
+		g.fillRect(0, 0, playHeadPosition, getHeight());
 	}
 }
 
@@ -84,11 +91,14 @@ void WaveForm::filesDropped(const juce::StringArray& files, int x, int y)
 	{
 		if (isInterestedInFileDrag(file))
 		{
+			/*
+			auto myFile = std::make_unique<juce::File>(file);
+			mFileName = myFile->getFileNameWithoutExtension();
+			*/
+
 			audioProcessor.loadFile(file);
 			DBG("file is loaded");
-
-			mShouldBePainting = true;
-			repaint();
 		}
 	}
+	repaint();
 }

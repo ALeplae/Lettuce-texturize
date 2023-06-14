@@ -14,6 +14,9 @@
       <FILE id="P1piUh" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="lttY0X" name="WaveForm.cpp" compile="1" resource="0" file="Source/WaveForm.cpp"/>
       <FILE id="lw8zze" name="WaveForm.h" compile="0" resource="0" file="Source/WaveForm.h"/>
+      <FILE id="gF7q3D" name="ADSRComponent.cpp" compile="1" resource="0"
+            file="Source/ADSRComponent.cpp"/>
+      <FILE id="HGj7I6" name="ADSRComponent.h" compile="0" resource="0" file="Source/ADSRComponent.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

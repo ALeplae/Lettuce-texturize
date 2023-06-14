@@ -71,6 +71,8 @@ public:
 
 	juce::ADSR::Parameters& getADSRParams() { return mADSRParams; }
 	juce::AudioProcessorValueTreeState& getAPVTS() { return mAPVTS; }
+	std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; }
+	std::atomic<int>& getSampleCount() { return mSampleCount; }
 
 private:
 	std::unique_ptr<juce::FileChooser> fileChooser;
@@ -87,7 +89,11 @@ private:
 	juce::AudioProcessorValueTreeState mAPVTS;
 	juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
 	void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& poperty) override;
+	double mMidiNoteHz {0.0f};
+
 	std::atomic<bool> mShouldUpdate{ false };
+	std::atomic<bool> mIsNotePlayed{ false };
+	std::atomic<int> mSampleCount{ 0 };
 
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TexturizeAudioProcessor)

@@ -29,9 +29,11 @@ public:
     bool isInterestedInFileDrag(const juce::StringArray& files) override;
     void filesDropped(const juce::StringArray& files, int x, int y) override;
 
+    bool mShouldBePainting{ false };
+
 private:
     std::vector<float> mAudioPoints;
-    bool mShouldBePainting{ false };
+
 
 
     TexturizeAudioProcessor& audioProcessor;
