@@ -589,6 +589,9 @@
     <ClCompile Include="..\..\Source\ADSRComponent.cpp">
       <Filter>Texturize\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\VolumeSliders.cpp">
+      <Filter>Texturize\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>
     </ClCompile>
@@ -2923,6 +2926,9 @@
       <Filter>Texturize\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\ADSRComponent.h">
+      <Filter>Texturize\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\VolumeSliders.h">
       <Filter>Texturize\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

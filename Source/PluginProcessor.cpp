@@ -147,6 +147,7 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	// code that deletes unnecesary audio outputs if the amount of outputs > amount of inputs
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
+	 
 
 	if (mShouldUpdate)
 	{
@@ -163,7 +164,7 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		{
 			//note's on -> start the playhead
 			mIsNotePlayed = true;
-			mMidiNoteHz = m.getMidiNoteInHertz(m.getNoteNumber(), 440) / 1046.5f;
+			mMidiNoteHz = static_cast<float>(m.getMidiNoteInHertz(m.getNoteNumber(), 440)) / 1046.5f;
 			DBG(mMidiNoteHz);
 		}
 		else if (m.isNoteOff())
@@ -186,13 +187,16 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	// rendering of the sampler
 	mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
-
 	// audio processing...
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
-		// do something to the data here...
+		
 
+		for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+		{
+			channelData[sample] = buffer.getSample(channel, sample) * mRawVolume;
+		}
 	}
 }
 
@@ -303,6 +307,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::cre
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", 0.0f, 3.0f, 2.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 2.0f));
+
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DRY", "Dry", 0.0f, 1.3f, 1.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("WET", "Wet", 0.0f, 1.3f, 1.0f));
 
 	return { parameters.begin(), parameters.end() };
 

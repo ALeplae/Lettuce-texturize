@@ -11,18 +11,18 @@
 
 //==============================================================================
 TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProcessor& p)
-	: AudioProcessorEditor(&p), mWaveForm(p), mADSR(p), audioProcessor(p)
+	: AudioProcessorEditor(&p), mWaveForm(p), mADSR(p), mVolumeSliders(p), audioProcessor(p)
 {
-	setSize(938, 745);
-
 	mLoadButton.onClick = [this] { clickLoadButton(); };
 	renameLoadButton();
 	addAndMakeVisible(&mLoadButton);
 
 	addAndMakeVisible(mWaveForm);
 	addAndMakeVisible(mADSR);
+	addAndMakeVisible(mVolumeSliders);
 
 	startTimerHz(30);
+	setSize(938, 745);
 }
 
  TexturizeAudioProcessorEditor::~TexturizeAudioProcessorEditor()
@@ -46,6 +46,7 @@ void TexturizeAudioProcessorEditor::resized()
 
 	mWaveForm.setBounds(100, 40, getWidth() - 200, 60);
 	mADSR.setBoundsRelative(0.0f, 0.5f, 0.25f, 0.25f);
+	mVolumeSliders.setBoundsRelative(0.5f, 0.5f, 0.2f, 0.5f);
 }
 
 void TexturizeAudioProcessorEditor::clickLoadButton()
@@ -69,4 +70,4 @@ void TexturizeAudioProcessorEditor::renameLoadButton()
 void TexturizeAudioProcessorEditor::timerCallback()
 {
 	repaint();
-}
+} 

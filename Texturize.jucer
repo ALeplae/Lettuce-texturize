@@ -17,6 +17,9 @@
       <FILE id="gF7q3D" name="ADSRComponent.cpp" compile="1" resource="0"
             file="Source/ADSRComponent.cpp"/>
       <FILE id="HGj7I6" name="ADSRComponent.h" compile="0" resource="0" file="Source/ADSRComponent.h"/>
+      <FILE id="IBGkuQ" name="VolumeSliders.cpp" compile="1" resource="0"
+            file="Source/VolumeSliders.cpp"/>
+      <FILE id="C4nj9m" name="VolumeSliders.h" compile="0" resource="0" file="Source/VolumeSliders.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

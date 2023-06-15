@@ -21,7 +21,6 @@ ADSRComponent::ADSRComponent(TexturizeAudioProcessor& p) : audioProcessor(p)
 	mAttackSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
 	addAndMakeVisible(mAttackSlider);
-
 	mAttackLabel.setFont(fontSize);
 	mAttackLabel.setText("Attack", juce::NotificationType::dontSendNotification);
 	mAttackLabel.setJustificationType(juce::Justification::centredTop);
@@ -33,7 +32,6 @@ ADSRComponent::ADSRComponent(TexturizeAudioProcessor& p) : audioProcessor(p)
 	//Dec.
 	mDecaySlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
-	mDecaySlider.setRange(0.0f, 3.0f, 0.01f);
 	addAndMakeVisible(mDecaySlider);
 	mDecayLabel.setFont(fontSize);
 	mDecayLabel.setText("Decay", juce::NotificationType::dontSendNotification);
@@ -46,7 +44,6 @@ ADSRComponent::ADSRComponent(TexturizeAudioProcessor& p) : audioProcessor(p)
 	//Sus.
 	mSustainSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
-	mSustainSlider.setRange(0.0f, 1.0f, 0.01f);
 	addAndMakeVisible(mSustainSlider);
 	mSustainLabel.setFont(fontSize);
 	mSustainLabel.setText("Sustain", juce::NotificationType::dontSendNotification);
@@ -59,7 +56,6 @@ ADSRComponent::ADSRComponent(TexturizeAudioProcessor& p) : audioProcessor(p)
 	//Rel.
 	mReleaseSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
-	mReleaseSlider.setRange(0.0f, 5.0f, 0.01f);
 	addAndMakeVisible(mReleaseSlider);
 	mReleaseLabel.setFont(fontSize);
 	mReleaseLabel.setText("Release", juce::NotificationType::dontSendNotification);
