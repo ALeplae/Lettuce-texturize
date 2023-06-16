@@ -324,8 +324,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::cre
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 2.0f));
 
-	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DRY", "Dry", -48.0f, 0.0f, 0.0f));
-	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("WET", "Wet", -48.0f, 0.0f, 0.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DRY", "Dry", -60.0f, 6.0f, 0.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("WET", "Wet", -60.0f, 6.0f, 0.0f));
+
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("THRESHOLD", "Threshold", -60.0f, 6.0f, -30.0f));
 
 	return { parameters.begin(), parameters.end() };
 }

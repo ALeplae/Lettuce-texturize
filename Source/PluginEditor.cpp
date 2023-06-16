@@ -41,12 +41,12 @@ void TexturizeAudioProcessorEditor::paint(juce::Graphics& g)
 
 void TexturizeAudioProcessorEditor::resized()
 {
-	//mLoadButton.setBounds(100, 10, getWidth() - 200, 30);
+	mLoadButton.setBounds(100, 10, getWidth() - 200, 30);
 
-	//mWaveForm.setBounds(100, 40, getWidth() - 200, 60);
-	//mADSR.setBoundsRelative(0.0f, 0.5f, 0.25f, 0.25f);
-	//mVolumeSliders.setBoundsRelative(0.5f, 0.5f, 0.2f, 0.5f);
-	mLevelMeter.setBounds(100, 100, 15, 200);
+	mWaveForm.setBounds(100, 40, getWidth() - 200, 60);
+	mADSR.setBoundsRelative(0.0f, 0.5f, 0.25f, 0.25f);
+	mVolumeSliders.setBoundsRelative(0.5f, 0.5f, 0.2f, 0.5f);
+	mLevelMeter.setBounds(100, 100, 100, 200);
 }
 
 void TexturizeAudioProcessorEditor::clickLoadButton()

@@ -14,6 +14,19 @@
 //==============================================================================
 LevelMeters::LevelMeters(TexturizeAudioProcessor& p) : audioProcessor(p)
 {
+    const float fontSize{ 20.0f };
+    //dry slider
+    mThresholdSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    mThresholdSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    mThresholdSlider.setAlpha(0.0f);
+    addAndMakeVisible(mThresholdSlider);
+    mThresholdLabel.setFont(fontSize);
+    mThresholdLabel.setText("Threshold", juce::NotificationType::dontSendNotification);
+    mThresholdLabel.setJustificationType(juce::Justification::centredTop);
+    mThresholdLabel.attachToComponent(&mThresholdSlider, false);
+
+    mThresholdAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.getAPVTS(), "THRESHOLD", mThresholdSlider);
 }
 
 LevelMeters::~LevelMeters()
@@ -22,19 +35,43 @@ LevelMeters::~LevelMeters()
 
 void LevelMeters::paint (juce::Graphics& g)
 {
+    const auto sliderPos = getHeight() - juce::jmap<float>(
+        mThresholdSlider.getValue(), -60.f, +6.f, 0.f, static_cast<float>(getHeight() - mBorder));
+
     auto bounds = getLocalBounds().toFloat();
+    bounds.removeFromRight(mBorder);
+    bounds.removeFromTop(mBorder);
+
+
 
     g.setColour(juce::Colours::white.withBrightness(0.4f));
     g.fillRect(bounds);
 
-    g.setColour(juce::Colours::white);
-    const auto scaledY = juce::jmap<float>(audioProcessor.getRMSLevel(), -60.f, +6.f, 0.f, static_cast<float>(getHeight()));
-    g.fillRect(bounds.removeFromBottom(scaledY));
+    const auto scaledY = juce::jmap<float>(audioProcessor.getRMSLevel(), -60.f, +6.f, 0.f, static_cast<float>(getHeight() - mBorder));
+    
+    if (scaledY <= getHeight() - sliderPos)
+    {
+        g.setColour(juce::Colours::white);
+        g.fillRect(bounds.removeFromBottom(scaledY));
+    }
+    else
+    {
+        g.setColour(juce::Colours::red);
+        g.fillRect(bounds.removeFromBottom(scaledY));
+
+        bounds = getLocalBounds().toFloat();
+        bounds.removeFromRight(mBorder);
+        bounds.removeFromTop(mBorder);
+
+        g.setColour(juce::Colours::white);
+        g.fillRect(bounds.removeFromBottom(getHeight() - sliderPos));
+    }
+
+    g.setColour(juce::Colours::black);
+    g.drawLine(0, sliderPos, getWidth() - mBorder, sliderPos);
 }
 
 void LevelMeters::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
-
+    mThresholdSlider.setBounds(0, mBorder, getWidth() - mBorder, getHeight() - mBorder);
 }

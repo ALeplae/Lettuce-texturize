@@ -26,7 +26,13 @@ public:
     void resized() override;
 
 private:
-    juce::Slider mThreshHoldSlider
+    const float mBorder{ 30.0f };
+
+
+    juce::Slider mThresholdSlider;
+    juce::Label mThresholdLabel;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mThresholdAttachment;
 
     TexturizeAudioProcessor& audioProcessor;
 
