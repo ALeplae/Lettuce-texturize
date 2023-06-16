@@ -5,6 +5,8 @@
               pluginCharacteristicsValue="pluginWantsMidiIn">
   <MAINGROUP id="EKYHEO" name="Texturize">
     <GROUP id="{05603D65-5D3D-79CE-2B9A-1B5B95ED393B}" name="Source">
+      <FILE id="hwopmI" name="LevelMeters.cpp" compile="1" resource="0" file="Source/LevelMeters.cpp"/>
+      <FILE id="ZAWigj" name="LevelMeters.h" compile="0" resource="0" file="Source/LevelMeters.h"/>
       <FILE id="kePuhz" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Xnj0aY" name="PluginProcessor.h" compile="0" resource="0"

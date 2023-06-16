@@ -48,7 +48,6 @@ VolumeSliders::~VolumeSliders()
 
 void VolumeSliders::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::black);
 }
 
 void VolumeSliders::resized()

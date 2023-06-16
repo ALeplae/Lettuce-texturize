@@ -68,13 +68,14 @@ public:
 	juce::AudioBuffer<float>& getWaveForm() { return mWaveForm; }
 
 	void updateADSR();
+	void updateVolume();
 
 	juce::ADSR::Parameters& getADSRParams() { return mADSRParams; }
 	juce::AudioProcessorValueTreeState& getAPVTS() { return mAPVTS; }
 	std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; }
 	std::atomic<int>& getSampleCount() { return mSampleCount; }
 
-	float mRawVolume;
+	float& getRMSLevel() { return mRMSLevel; }
 
 private:
 	std::unique_ptr<juce::FileChooser> fileChooser;
@@ -95,11 +96,16 @@ private:
 	float mCurrentInput{ 0.0f };
 	float mCurrentOutput{ 0.0f };
 
+	float mDryVolume;
+	float mWetVolume;
+
+	float mRMSLevel, mTotalRMS;
+
 	std::atomic<bool> mShouldUpdate{ false };
 	std::atomic<bool> mIsNotePlayed{ false };
 	std::atomic<int> mSampleCount{ 0 };
 	std::atomic<float> mMidiNoteHz{ 0.0f };
-
+	
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TexturizeAudioProcessor)
 };

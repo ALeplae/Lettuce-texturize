@@ -11,7 +11,7 @@
 
 //==============================================================================
 TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProcessor& p)
-	: AudioProcessorEditor(&p), mWaveForm(p), mADSR(p), mVolumeSliders(p), audioProcessor(p)
+	: AudioProcessorEditor(&p), mWaveForm(p), mADSR(p), mVolumeSliders(p), mLevelMeter(p), audioProcessor(p)
 {
 	mLoadButton.onClick = [this] { clickLoadButton(); };
 	renameLoadButton();
@@ -20,6 +20,7 @@ TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProce
 	addAndMakeVisible(mWaveForm);
 	addAndMakeVisible(mADSR);
 	addAndMakeVisible(mVolumeSliders);
+	addAndMakeVisible(mLevelMeter);
 
 	startTimerHz(30);
 	setSize(938, 745);
@@ -40,13 +41,12 @@ void TexturizeAudioProcessorEditor::paint(juce::Graphics& g)
 
 void TexturizeAudioProcessorEditor::resized()
 {
-	// This is generally where you'll want to lay out the positions of any
-	// subcomponents in your editor..
-	mLoadButton.setBounds(100, 10, getWidth() - 200, 30);
+	//mLoadButton.setBounds(100, 10, getWidth() - 200, 30);
 
-	mWaveForm.setBounds(100, 40, getWidth() - 200, 60);
-	mADSR.setBoundsRelative(0.0f, 0.5f, 0.25f, 0.25f);
-	mVolumeSliders.setBoundsRelative(0.5f, 0.5f, 0.2f, 0.5f);
+	//mWaveForm.setBounds(100, 40, getWidth() - 200, 60);
+	//mADSR.setBoundsRelative(0.0f, 0.5f, 0.25f, 0.25f);
+	//mVolumeSliders.setBoundsRelative(0.5f, 0.5f, 0.2f, 0.5f);
+	mLevelMeter.setBounds(100, 100, 15, 200);
 }
 
 void TexturizeAudioProcessorEditor::clickLoadButton()
@@ -69,5 +69,6 @@ void TexturizeAudioProcessorEditor::renameLoadButton()
 
 void TexturizeAudioProcessorEditor::timerCallback()
 {
+
 	repaint();
 } 

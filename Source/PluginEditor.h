@@ -13,6 +13,7 @@
 #include "WaveForm.h"
 #include "ADSRComponent.h"
 #include "VolumeSliders.h"
+#include "LevelMeters.h"
 
 
 //==============================================================================
@@ -40,6 +41,7 @@ private:
     WaveForm mWaveForm;
     ADSRComponent mADSR;
     VolumeSliders mVolumeSliders;
+    LevelMeters mLevelMeter;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
