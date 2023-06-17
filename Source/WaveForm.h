@@ -32,9 +32,14 @@ public:
     bool mShouldBePainting{ false };
 
 private:
+    std::unique_ptr<juce::FileChooser> fileChooser;
+
     juce::TextButton mLoadButton;
     void clickLoadButton();
     void renameLoadButton();
+
+    void loadFile();
+    void loadFile(const juce::String& path);
 
     std::vector<float> mAudioPoints;
 

@@ -58,9 +58,6 @@ public:
 	void getStateInformation(juce::MemoryBlock& destData) override;
 	void setStateInformation(const void* data, int sizeInBytes) override;
 
-	void loadFile();
-	void loadFile(const juce::String& path);
-
 	void fileSetup(juce::File result);
 	juce::File root, savedFile;
 
@@ -78,10 +75,6 @@ public:
 	float& getRMSLevel() { return mRMSLevel; }
 
 private:
-	//std::vector<int>
-
-	std::unique_ptr<juce::FileChooser> fileChooser;
-
 	juce::Synthesiser mSampler;
 	const int mNumVoices{ 3 };
 	juce::AudioBuffer<float> mWaveForm;

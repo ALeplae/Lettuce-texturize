@@ -253,43 +253,6 @@ void TexturizeAudioProcessor::setStateInformation(const void* data, int sizeInBy
 	// whose contents will have been created by the getStateInformation() call.
 }
 
-void TexturizeAudioProcessor::loadFile()
-{
-	//choose a file
-	fileChooser = std::make_unique<juce::FileChooser>("Choose a WAV, mp3 or AIF file",
-		root,
-		"*");
-	const auto fileChooserFlags = juce::FileBrowserComponent::openMode |
-		juce::FileBrowserComponent::canSelectFiles |
-		juce::FileBrowserComponent::canSelectDirectories;
-	fileChooser->launchAsync(fileChooserFlags, [this](const juce::FileChooser& chooser)
-		{
-			juce::File result(chooser.getResult());
-
-			//if chosen right:
-			if (result.getFileExtension() == ".mp3" || result.getFileExtension() == ".wav" || result.getFileExtension() == ".aif" || result.getFileExtension() == ".aiff")
-			{
-				root = result.getParentDirectory().getFullPathName();
-				savedFile = result;
-				//renameLoadButton();
-				fileSetup(result);
-			}
-			else
-			{
-				DBG("you messed up choosing a file :(");
-			}
-		});
-}
-
-void TexturizeAudioProcessor::loadFile(const juce::String& path)
-{
-	auto file = juce::File(path);
-	fileSetup(file);
-	root = file.getParentDirectory().getFullPathName();
-	savedFile = file;
-	//renameLoadButton();
-}
-
 void TexturizeAudioProcessor::fileSetup(juce::File file)
 {
 	mSampler.clearSounds();
