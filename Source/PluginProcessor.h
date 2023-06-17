@@ -78,6 +78,8 @@ public:
 	float& getRMSLevel() { return mRMSLevel; }
 
 private:
+	//std::vector<int>
+
 	std::unique_ptr<juce::FileChooser> fileChooser;
 
 	juce::Synthesiser mSampler;
@@ -93,8 +95,7 @@ private:
 	juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
 	void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& poperty) override;
 
-	float mCurrentInput{ 0.0f };
-	float mCurrentOutput{ 0.0f };
+	juce::AudioBuffer<float> mSynthBuffer;
 
 	float mDryVolume;
 	float mWetVolume;

@@ -104,6 +104,9 @@ void TexturizeAudioProcessor::changeProgramName(int index, const juce::String& n
 void TexturizeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	mSampler.setCurrentPlaybackSampleRate(sampleRate);
+
+	mSynthBuffer.setSize(getTotalNumOutputChannels(), static_cast<int>(sampleRate));
+
 	updateADSR();
 	updateVolume();
 }
@@ -146,24 +149,29 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	auto totalNumInputChannels = getTotalNumInputChannels();
 	auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-	for (int channel = 0; channel < totalNumInputChannels; ++channel)
-	{
-		mTotalRMS += buffer.getRMSLevel(channel, 0, buffer.getNumSamples());
-	}
-
-	mRMSLevel = juce::Decibels::gainToDecibels(mTotalRMS / totalNumInputChannels);
-	mTotalRMS = 0;
-
 	// code that deletes unnecesary audio outputs if the amount of outputs > amount of inputs
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
 
+
+	//get RMS level
+	for (int channel = 0; channel < totalNumInputChannels; ++channel)
+	{
+		mTotalRMS += buffer.getRMSLevel(channel, 0, buffer.getNumSamples());
+	}
+	mRMSLevel = juce::Decibels::gainToDecibels(mTotalRMS / totalNumInputChannels);
+	mTotalRMS = 0;
+
+
+	//update values from gui
 	if (mShouldUpdate)
 	{
 		updateADSR();
 		updateVolume();
 	}
 
+
+	//get play head position
 	juce::MidiMessage m;
 	juce::MidiBuffer::Iterator it{ midiMessages };
 	int sample;
@@ -193,11 +201,21 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		mSampleCount = 0;
 	}
 
-	// rendering of the sampler
-	mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-	
+	mSynthBuffer.makeCopyOf(buffer, false);
+	mSampler.renderNextBlock(mSynthBuffer, midiMessages, 0, mSynthBuffer.getNumSamples());
+
+	for (auto channel = 0; channel < mSynthBuffer.getNumChannels(); ++channel)
+	{
+		auto* channelData = mSynthBuffer.getWritePointer(channel);
+		for (auto sample = 0; sample < mSynthBuffer.getNumSamples(); ++sample)
+		{
+			channelData[sample] -= buffer.getSample(channel, sample);
+			channelData[sample] = mSynthBuffer.getSample(channel, sample) * mWetVolume;
+		}
+	}
+
 	//audio processing
-	for (int channel = 0; channel < totalNumInputChannels; ++channel)
+	for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
 
@@ -205,6 +223,7 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		{
 			//updating dry volume
 			channelData[sample] = buffer.getSample(channel, sample) * mDryVolume;
+			channelData[sample] += mSynthBuffer.getSample(channel, sample);
 		}
 	}
 }

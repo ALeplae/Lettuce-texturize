@@ -32,9 +32,11 @@ public:
     bool mShouldBePainting{ false };
 
 private:
+    juce::TextButton mLoadButton;
+    void clickLoadButton();
+    void renameLoadButton();
+
     std::vector<float> mAudioPoints;
-
-
 
     TexturizeAudioProcessor& audioProcessor;
 

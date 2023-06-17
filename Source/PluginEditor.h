@@ -34,10 +34,6 @@ public:
 
 
 private:
-    juce::TextButton mLoadButton;
-    void clickLoadButton();
-    void renameLoadButton();
-
     WaveForm mWaveForm;
     ADSRComponent mADSR;
     VolumeSliders mVolumeSliders;

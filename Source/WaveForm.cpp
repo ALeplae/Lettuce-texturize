@@ -14,7 +14,9 @@
 //==============================================================================
 WaveForm::WaveForm(TexturizeAudioProcessor& p) : audioProcessor (p)
 {
-	
+	mLoadButton.onClick = [this] { clickLoadButton(); };
+	renameLoadButton();
+	addAndMakeVisible(&mLoadButton);
 }
 
 WaveForm::~WaveForm()
@@ -67,9 +69,25 @@ void WaveForm::paint (juce::Graphics& g)
 
 void WaveForm::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
+	mLoadButton.setBounds(0, 0, getWidth(), getHeight()/5*3);
+}
 
+void WaveForm::clickLoadButton()
+{
+	audioProcessor.loadFile();
+	mShouldBePainting = true;
+}
+
+void WaveForm::renameLoadButton()
+{
+	if (audioProcessor.savedFile.getFileName() != "")
+	{
+		mLoadButton.setButtonText(audioProcessor.savedFile.getFileName());
+	}
+	else
+	{
+		mLoadButton.setButtonText("please load an mp3, WAV or AIF file");
+	}
 }
 
 bool WaveForm::isInterestedInFileDrag(const juce::StringArray& files)
