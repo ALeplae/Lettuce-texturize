@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Texturize\features">
+      <UniqueIdentifier>{2F154917-BB8E-8531-DEC1-022CA73940DE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Texturize\Source">
       <UniqueIdentifier>{7FCCEFA8-6185-0922-5552-A051C43AC46B}</UniqueIdentifier>
     </Filter>
@@ -577,22 +580,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Filters.cpp">
+      <Filter>Texturize\features</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\LevelMeters.cpp">
-      <Filter>Texturize\Source</Filter>
+      <Filter>Texturize\features</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\WaveForm.cpp">
+      <Filter>Texturize\features</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ADSRComponent.cpp">
+      <Filter>Texturize\features</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\VolumeSliders.cpp">
+      <Filter>Texturize\features</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>Texturize\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
-      <Filter>Texturize\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\WaveForm.cpp">
-      <Filter>Texturize\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\ADSRComponent.cpp">
-      <Filter>Texturize\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\VolumeSliders.cpp">
       <Filter>Texturize\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
@@ -2919,22 +2925,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Filters.h">
+      <Filter>Texturize\features</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\LevelMeters.h">
-      <Filter>Texturize\Source</Filter>
+      <Filter>Texturize\features</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WaveForm.h">
+      <Filter>Texturize\features</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ADSRComponent.h">
+      <Filter>Texturize\features</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\VolumeSliders.h">
+      <Filter>Texturize\features</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
       <Filter>Texturize\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">
-      <Filter>Texturize\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\WaveForm.h">
-      <Filter>Texturize\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ADSRComponent.h">
-      <Filter>Texturize\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\VolumeSliders.h">
       <Filter>Texturize\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

@@ -14,6 +14,7 @@
 #include "ADSRComponent.h"
 #include "VolumeSliders.h"
 #include "LevelMeters.h"
+#include "Filters.h"
 
 
 //==============================================================================
@@ -32,12 +33,13 @@ public:
 
     void timerCallback() override;
 
-
+     
 private:
     WaveForm mWaveForm;
     ADSRComponent mADSR;
     VolumeSliders mVolumeSliders;
     LevelMeters mLevelMeter;
+    Filters mFilters;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -45,3 +47,4 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TexturizeAudioProcessorEditor)
 };
+ 

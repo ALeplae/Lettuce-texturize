@@ -4,16 +4,11 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginCharacteristicsValue="pluginWantsMidiIn">
   <MAINGROUP id="EKYHEO" name="Texturize">
-    <GROUP id="{05603D65-5D3D-79CE-2B9A-1B5B95ED393B}" name="Source">
+    <GROUP id="{7160A4D9-BF2D-E903-7C69-D68507E51057}" name="features">
+      <FILE id="vPnAqL" name="Filters.cpp" compile="1" resource="0" file="Source/Filters.cpp"/>
+      <FILE id="m1ffI3" name="Filters.h" compile="0" resource="0" file="Source/Filters.h"/>
       <FILE id="hwopmI" name="LevelMeters.cpp" compile="1" resource="0" file="Source/LevelMeters.cpp"/>
       <FILE id="ZAWigj" name="LevelMeters.h" compile="0" resource="0" file="Source/LevelMeters.h"/>
-      <FILE id="kePuhz" name="PluginProcessor.cpp" compile="1" resource="0"
-            file="Source/PluginProcessor.cpp"/>
-      <FILE id="Xnj0aY" name="PluginProcessor.h" compile="0" resource="0"
-            file="Source/PluginProcessor.h"/>
-      <FILE id="YhHkBW" name="PluginEditor.cpp" compile="1" resource="0"
-            file="Source/PluginEditor.cpp"/>
-      <FILE id="P1piUh" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="lttY0X" name="WaveForm.cpp" compile="1" resource="0" file="Source/WaveForm.cpp"/>
       <FILE id="lw8zze" name="WaveForm.h" compile="0" resource="0" file="Source/WaveForm.h"/>
       <FILE id="gF7q3D" name="ADSRComponent.cpp" compile="1" resource="0"
@@ -22,6 +17,15 @@
       <FILE id="IBGkuQ" name="VolumeSliders.cpp" compile="1" resource="0"
             file="Source/VolumeSliders.cpp"/>
       <FILE id="C4nj9m" name="VolumeSliders.h" compile="0" resource="0" file="Source/VolumeSliders.h"/>
+    </GROUP>
+    <GROUP id="{05603D65-5D3D-79CE-2B9A-1B5B95ED393B}" name="Source">
+      <FILE id="kePuhz" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="Xnj0aY" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="YhHkBW" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="P1piUh" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

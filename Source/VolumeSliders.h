@@ -26,6 +26,7 @@ public:
     void resized() override;
 
 private:
+    const float mFontSize{ 20.0f };
     juce::Slider mDrySlider, mWetSlider;
     juce::Label mDryLabel, mWetLabel;
 

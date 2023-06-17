@@ -1,9 +1,9 @@
 /*
   ==============================================================================
 
-    ADSRComponent.cpp
-    Created: 14 Jun 2023 1:20:55am
-    Author:  arthu
+	ADSRComponent.cpp
+	Created: 14 Jun 2023 1:20:55am
+	Author:  arthu
 
   ==============================================================================
 */
@@ -70,17 +70,35 @@ ADSRComponent::~ADSRComponent()
 {
 }
 
-void ADSRComponent::paint (juce::Graphics& g)
+void ADSRComponent::paint(juce::Graphics& g)
 {
-	g.fillAll(juce::Colours::black);
 }
 
 void ADSRComponent::resized()
 {
-	const int dialSize{ 100 };
+	int size;
 
-	mAttackSlider.setBounds(0, getHeight() / 2, dialSize, dialSize);
-	mDecaySlider.setBounds(dialSize, getHeight() / 2, dialSize, dialSize);
-	mSustainSlider.setBounds(dialSize * 2, getHeight() / 2, dialSize, dialSize);
-	mReleaseSlider.setBounds(dialSize * 3, getHeight() / 2, dialSize, dialSize);
+	if (getWidth() / 4 < getHeight()) 
+	{
+		size = getWidth()/4;
+	}
+	else 
+	{
+		size = getHeight();
+	}
+
+	/*
+	const int maxSize{ 50 };
+	if (size >= maxSize) 
+	{
+		size = maxSize;
+	}
+	*/
+
+	const int border{ 30 };
+	mAttackSlider.setBounds(0, border, size, size);
+	mDecaySlider.setBounds(size, border, size, size);
+	mSustainSlider.setBounds(size * 2, border, size, size);
+	mReleaseSlider.setBounds(size * 3, border, size, size);
+
 }

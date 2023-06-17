@@ -14,13 +14,11 @@
 //==============================================================================
 VolumeSliders::VolumeSliders(TexturizeAudioProcessor& p) : audioProcessor(p)
 {
-    const float fontSize{ 20.0f };
-
     //dry slider
     mDrySlider.setSliderStyle(juce::Slider::LinearVertical);
     mDrySlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(mDrySlider);
-    mDryLabel.setFont(fontSize);
+    mDryLabel.setFont(mFontSize);
     mDryLabel.setText("Dry", juce::NotificationType::dontSendNotification);
     mDryLabel.setJustificationType(juce::Justification::centredTop);
     mDryLabel.attachToComponent(&mDrySlider, false);
@@ -33,7 +31,7 @@ VolumeSliders::VolumeSliders(TexturizeAudioProcessor& p) : audioProcessor(p)
     mWetSlider.setSliderStyle(juce::Slider::LinearVertical);
     mWetSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     addAndMakeVisible(mWetSlider);
-    mWetLabel.setFont(fontSize);
+    mWetLabel.setFont(mFontSize);
     mWetLabel.setText("Wet", juce::NotificationType::dontSendNotification);
     mWetLabel.setJustificationType(juce::Justification::centredTop);
     mWetLabel.attachToComponent(&mWetSlider, false);
@@ -52,6 +50,6 @@ void VolumeSliders::paint (juce::Graphics& g)
 
 void VolumeSliders::resized()
 {
-    mDrySlider.setBounds(0, 50, 100, getHeight() - 50);
-    mWetSlider.setBounds(getWidth() - 100, 50, 100, getHeight() - 50);
+    mDrySlider.setBounds(0, mFontSize + 10, 100, getHeight() - mFontSize);
+    mWetSlider.setBounds(getWidth() - 100, mFontSize + 10, 100, getHeight() - mFontSize);
 }

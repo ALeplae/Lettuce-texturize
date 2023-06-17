@@ -64,9 +64,6 @@ public:
 	int getNumSamplerSounds() { return mSampler.getNumSounds(); }
 	juce::AudioBuffer<float>& getWaveForm() { return mWaveForm; }
 
-	void updateADSR();
-	void updateVolume();
-
 	juce::ADSR::Parameters& getADSRParams() { return mADSRParams; }
 	juce::AudioProcessorValueTreeState& getAPVTS() { return mAPVTS; }
 	std::atomic<bool>& isNotePlayed() { return mIsNotePlayed; }
@@ -90,10 +87,17 @@ private:
 
 	juce::AudioBuffer<float> mSynthBuffer;
 
+	void updateADSR();
+
+	void updateVolume();
 	float mDryVolume;
 	float mWetVolume;
 
 	float mRMSLevel, mTotalRMS;
+
+
+	void updateFilters();
+
 
 	std::atomic<bool> mShouldUpdate{ false };
 	std::atomic<bool> mIsNotePlayed{ false };

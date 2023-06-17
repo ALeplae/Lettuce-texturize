@@ -109,6 +109,7 @@ void TexturizeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
 
 	updateADSR();
 	updateVolume();
+	updateFilters();
 }
 
 void TexturizeAudioProcessor::releaseResources()
@@ -162,14 +163,13 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	mRMSLevel = juce::Decibels::gainToDecibels(mTotalRMS / totalNumInputChannels);
 	mTotalRMS = 0;
 
-
 	//update values from gui
 	if (mShouldUpdate)
 	{
 		updateADSR();
 		updateVolume();
+		updateFilters();
 	}
-
 
 	//get play head position
 	juce::MidiMessage m;
@@ -201,20 +201,26 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		mSampleCount = 0;
 	}
 
+	//generating sample
 	mSynthBuffer.makeCopyOf(buffer, false);
 	mSampler.renderNextBlock(mSynthBuffer, midiMessages, 0, mSynthBuffer.getNumSamples());
 
+	//updating filters
+
+
+
+	//audio processing
 	for (auto channel = 0; channel < mSynthBuffer.getNumChannels(); ++channel)
 	{
 		auto* channelData = mSynthBuffer.getWritePointer(channel);
 		for (auto sample = 0; sample < mSynthBuffer.getNumSamples(); ++sample)
 		{
 			channelData[sample] -= buffer.getSample(channel, sample);
+			//updating wet volume
 			channelData[sample] = mSynthBuffer.getSample(channel, sample) * mWetVolume;
 		}
 	}
 
-	//audio processing
 	for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
@@ -223,6 +229,7 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		{
 			//updating dry volume
 			channelData[sample] = buffer.getSample(channel, sample) * mDryVolume;
+			//adding sampler to main buffer
 			channelData[sample] += mSynthBuffer.getSample(channel, sample);
 		}
 	}
@@ -272,6 +279,7 @@ void TexturizeAudioProcessor::fileSetup(juce::File file)
 
 	updateADSR();
 	updateVolume();
+	updateFilters();
 }
 
 void TexturizeAudioProcessor::updateADSR() 
@@ -297,6 +305,12 @@ void TexturizeAudioProcessor::updateVolume()
 	mWetVolume = pow(10, mAPVTS.getRawParameterValue("WET")->load() / 20);
 }
 
+void TexturizeAudioProcessor::updateFilters()
+{
+	mLpCutoffFrequency = mAPVTS.getRawParameterValue("LP")->load();
+	mHpCutoffFrequency = mAPVTS.getRawParameterValue("HP")->load();
+}
+
 juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::createParameters()
 {
 	std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
@@ -304,12 +318,15 @@ juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::cre
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", 0.0f, 5.0f, 0.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", 0.0f, 3.0f, 2.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
-	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 2.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 5.0f, 0.5f));
 
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DRY", "Dry", -60.0f, 6.0f, 0.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("WET", "Wet", -60.0f, 6.0f, 0.0f));
 
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("THRESHOLD", "Threshold", -60.0f, 6.0f, -30.0f));
+
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LP", "Low Pass", 20.0f, 20000.0f, 20000.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("HP", "High Pass", 20.0f, 20000.0f, 20000.0f));
 
 	return { parameters.begin(), parameters.end() };
 }

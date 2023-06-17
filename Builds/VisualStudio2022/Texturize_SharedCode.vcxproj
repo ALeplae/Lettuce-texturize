@@ -139,12 +139,13 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Filters.cpp"/>
     <ClCompile Include="..\..\Source\LevelMeters.cpp"/>
-    <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
-    <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\Source\WaveForm.cpp"/>
     <ClCompile Include="..\..\Source\ADSRComponent.cpp"/>
     <ClCompile Include="..\..\Source\VolumeSliders.cpp"/>
+    <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
+    <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -2317,12 +2318,13 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Filters.h"/>
     <ClInclude Include="..\..\Source\LevelMeters.h"/>
-    <ClInclude Include="..\..\Source\PluginProcessor.h"/>
-    <ClInclude Include="..\..\Source\PluginEditor.h"/>
     <ClInclude Include="..\..\Source\WaveForm.h"/>
     <ClInclude Include="..\..\Source\ADSRComponent.h"/>
     <ClInclude Include="..\..\Source\VolumeSliders.h"/>
+    <ClInclude Include="..\..\Source\PluginProcessor.h"/>
+    <ClInclude Include="..\..\Source\PluginEditor.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
