@@ -31,6 +31,7 @@ LevelMeters::LevelMeters(TexturizeAudioProcessor& p) : audioProcessor(p)
 
 LevelMeters::~LevelMeters()
 {
+
 }
 
 void LevelMeters::paint (juce::Graphics& g)
@@ -41,8 +42,6 @@ void LevelMeters::paint (juce::Graphics& g)
     auto bounds = getLocalBounds().toFloat();
     bounds.removeFromRight(mBorder);
     bounds.removeFromTop(mBorder);
-
-
 
     g.setColour(juce::Colours::white.withBrightness(0.4f));
     g.fillRect(bounds);
@@ -69,9 +68,16 @@ void LevelMeters::paint (juce::Graphics& g)
 
     g.setColour(juce::Colours::black);
     g.drawLine(0, sliderPos, getWidth() - mBorder, sliderPos);
+
+
+
+
+    g.fillAll(juce::Colours::red);
 }
 
 void LevelMeters::resized()
 {
+    /*
     mThresholdSlider.setBounds(0, mBorder, getWidth() - mBorder, getHeight() - mBorder);
+    */
 }

@@ -16,6 +16,7 @@
 #include "LevelMeters.h"
 #include "Filters.h"
 #include "Panner.h"
+#include "DynamicLevel.h"
 
 
 //==============================================================================
@@ -42,6 +43,7 @@ private:
     LevelMeters mLevelMeter;
     Filters mFilters;
     Panner mPanner;
+    DynamicLevel mDynamicLevel;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

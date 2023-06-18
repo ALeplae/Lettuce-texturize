@@ -72,6 +72,8 @@ void WaveForm::paint (juce::Graphics& g)
 		g.setColour(juce::Colours::black.withAlpha (0.2f));
 		g.fillRect(0, 0, playHeadPosition, getHeight());
 	}
+
+	g.fillAll(juce::Colours::blue);
 }
 
 void WaveForm::resized()
@@ -152,9 +154,11 @@ void WaveForm::loadFile()
 
 void WaveForm::loadFile(const juce::String& path)
 {
+	/*
 	auto file = juce::File(path);
 	audioProcessor.fileSetup(file);
 	audioProcessor.root = file.getParentDirectory().getFullPathName();
 	audioProcessor.savedFile = file;
 	renameLoadButton();
+	*/
 }

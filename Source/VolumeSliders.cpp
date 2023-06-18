@@ -46,10 +46,13 @@ VolumeSliders::~VolumeSliders()
 
 void VolumeSliders::paint (juce::Graphics& g)
 {
+    g.fillAll(juce::Colours::green);
 }
 
 void VolumeSliders::resized()
 {
+    /*
     mDrySlider.setBounds(0, mFontSize + 10, 100, getHeight() - mFontSize);
     mWetSlider.setBounds(getWidth() - 100, mFontSize + 10, 100, getHeight() - mFontSize);
+    */
 }

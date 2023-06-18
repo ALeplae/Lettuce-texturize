@@ -12,11 +12,25 @@
 #include "DynamicLevel.h"
 
 //==============================================================================
-DynamicLevel::DynamicLevel()
+DynamicLevel::DynamicLevel(TexturizeAudioProcessor& p) : audioProcessor(p)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
+	const float fontSize{ 20.0f };
 
+	//Att.
+	mDynamicLevelSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+	mDynamicLevelSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	addAndMakeVisible(mDynamicLevelSlider);
+	mDynamicLevelLabel.setFont(fontSize);
+	mDynamicLevelLabel.setText("Intensity", juce::NotificationType::dontSendNotification);
+	mDynamicLevelLabel.setJustificationType(juce::Justification::centredTop);
+	mDynamicLevelLabel.attachToComponent(&mDynamicLevelSlider, false);
+	mDynamicLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+		audioProcessor.getAPVTS(), "DYN_INT", mDynamicLevelSlider);
+
+	mSetDynamicButton.setButtonText("Dynamic");
+	addAndMakeVisible(mSetDynamicButton);
+	mSetDynamicAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+		audioProcessor.getAPVTS(), "DYN_SET", mSetDynamicButton);
 }
 
 DynamicLevel::~DynamicLevel()
@@ -25,27 +39,14 @@ DynamicLevel::~DynamicLevel()
 
 void DynamicLevel::paint (juce::Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
 
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
-
-    g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("DynamicLevel", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
 }
 
 void DynamicLevel::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
+	const int size{100};
+	const int border{ 30 };
+	mDynamicLevelSlider.setBounds(0, 100, size, size);
 
+	mSetDynamicButton.setBounds(0, 0, size, size / 2);
 }

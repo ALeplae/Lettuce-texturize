@@ -97,7 +97,12 @@ private:
 	void updatePan();
 	float mPanAmount;
 
-	float mRMSLevel, mTotalRMS;
+	void updateThresh();
+	float mRMSLevel, mTotalRMS, mThreshold;
+
+	void updateDynLevel();
+	float mDynIntensity;
+	bool mDynEnabled;
 
 	float mSampleRate;
 	float mLpCutoffFrequency, mHpCutoffFrequency;

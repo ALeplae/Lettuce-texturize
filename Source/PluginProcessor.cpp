@@ -125,6 +125,8 @@ void TexturizeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
 	updateVolume();
 	updateFilters();
 	updatePan();
+	updateDynLevel();
+	updateThresh();
 }
 
 void TexturizeAudioProcessor::releaseResources()
@@ -188,6 +190,8 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		updateADSR();
 		updateVolume();
 		updatePan();
+		updateDynLevel();
+		updateThresh();
 	}
 
 	//get play head position
@@ -223,15 +227,28 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 
 	//generating sample
 	mSynthBuffer.makeCopyOf(buffer, false);
-	mSampler.renderNextBlock(mSynthBuffer, midiMessages, 0, mSynthBuffer.getNumSamples());
+	
+	if (mThreshold <= mRMSLevel)
+	{
+		mSampler.renderNextBlock(mSynthBuffer, midiMessages, 0, mSynthBuffer.getNumSamples());
+	}
 
 	//audio processing
 	for (auto channel = 0; channel < mSynthBuffer.getNumChannels(); ++channel)
 	{
 		auto* channelData = mSynthBuffer.getWritePointer(channel);
 
-		
-		float channelRMSLevel = juce::jmap<float>(buffer.getRMSLevel(channel, 0, buffer.getNumSamples()), 0.f, 0.3f, 0.0f, 1.0f);
+		float channelRMSLevel{ 1.f };
+
+		if (mDynEnabled) 
+		{
+			channelRMSLevel = juce::jmap<float>(buffer.getRMSLevel(channel, 0, buffer.getNumSamples()), 0.f, 1.f - mDynIntensity, 0.0f, 1.0f);
+		}
+		else
+		{
+			channelRMSLevel = 1.f;
+		}
+
 
 		float leftGain = std::sqrt(0.5f - (mPanAmount * 0.5f));
 		float rightGain = std::sqrt(0.5f + (mPanAmount * 0.5f));
@@ -240,7 +257,7 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		{
 			channelData[sample] -= buffer.getSample(channel, sample);
 
-			//updating wet volume
+			//updating sampler volume
 			channelData[sample] = mSynthBuffer.getSample(channel, sample) * mWetVolume * channelRMSLevel;
 			
 
@@ -322,6 +339,8 @@ void TexturizeAudioProcessor::fileSetup(juce::File file)
 	updateVolume();
 	updateFilters();
 	updatePan();
+	updateDynLevel();
+	updateThresh();
 }
 
 void TexturizeAudioProcessor::updateADSR() 
@@ -361,6 +380,17 @@ void TexturizeAudioProcessor::updatePan()
 	mPanAmount = mAPVTS.getRawParameterValue("PAN")->load();
 }
 
+void TexturizeAudioProcessor::updateDynLevel()
+{
+	mDynIntensity = mAPVTS.getRawParameterValue("DYN_INT")->load();
+	mDynEnabled = mAPVTS.getRawParameterValue("DYN_SET")->load();
+}
+
+void TexturizeAudioProcessor::updateThresh()
+{
+	mThreshold = mAPVTS.getRawParameterValue("THRESHOLD")->load();
+}
+
 juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::createParameters()
 {
 	std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
@@ -373,7 +403,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::cre
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DRY", "Dry", -60.0f, 6.0f, 0.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("WET", "Wet", -60.0f, 6.0f, 0.0f));
 
-	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("THRESHOLD", "Threshold", -60.0f, 6.0f, -30.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("THRESHOLD", "Threshold", -60.0f, 6.0f, -60.0f));
 
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LP", "Low Pass",
 		juce::NormalisableRange{ 20.0f, 20000.0f, 0.1f, 0.2f, false }, 20000.0f));
@@ -381,6 +411,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::cre
 		juce::NormalisableRange{ 20.0f, 20000.0f, 0.1f, 0.2f, false }, 20.0f));
 
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("PAN", "Pan", -1.0f, 1.0f, 0.0f));
+
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("DYN_INT", "Intensity", 0.0f, 0.99f, 0.3f));
+
+	parameters.push_back(std::make_unique<juce::AudioParameterBool>("DYN_SET", "Set dynamic level", false));
 
 	return { parameters.begin(), parameters.end() };
 }
