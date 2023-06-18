@@ -71,6 +71,8 @@ public:
 
 	float& getRMSLevel() { return mRMSLevel; }
 
+	void updateFilters();
+
 private:
 	juce::Synthesiser mSampler;
 	const int mNumVoices{ 3 };
@@ -90,14 +92,13 @@ private:
 	void updateADSR();
 
 	void updateVolume();
-	float mDryVolume;
-	float mWetVolume;
+	float mDryVolume, mWetVolume;
 
 	float mRMSLevel, mTotalRMS;
 
-
-	void updateFilters();
-
+	float mSampleRate;
+	float mLpCutoffFrequency, mHpCutoffFrequency;
+	juce::dsp::ProcessorDuplicator<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients<float>> lowPassFilter, highPassFilter;
 
 	std::atomic<bool> mShouldUpdate{ false };
 	std::atomic<bool> mIsNotePlayed{ false };

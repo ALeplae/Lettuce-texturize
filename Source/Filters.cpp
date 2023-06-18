@@ -65,13 +65,13 @@ void Filters::resized()
 		size = getHeight();
 	}
 
-	/*
-	const int maxSize{ 50 };
+	
+	const int maxSize{ 100 };
 	if (size >= maxSize)
 	{
 		size = maxSize;
 	}
-	*/
+	
 
 
 	const int border{ 30 };

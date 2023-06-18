@@ -19,7 +19,9 @@ TexturizeAudioProcessor::TexturizeAudioProcessor()
 #endif
 		.withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-	), mAPVTS (*this, nullptr, "PARAMETERS", createParameters())
+	), mAPVTS (*this, nullptr, "PARAMETERS", createParameters()), 
+	lowPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(48000, 20000.0f, 0.1f)),
+	highPassFilter(juce::dsp::IIR::Coefficients<float>::makeLowPass(48000, 20000.0f, 0.1f))
 #endif
 {
 	mFormatManager.registerBasicFormats();
@@ -103,9 +105,21 @@ void TexturizeAudioProcessor::changeProgramName(int index, const juce::String& n
 //==============================================================================
 void TexturizeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+	mSampleRate = sampleRate;
+
 	mSampler.setCurrentPlaybackSampleRate(sampleRate);
 
 	mSynthBuffer.setSize(getTotalNumOutputChannels(), static_cast<int>(sampleRate));
+
+	juce::dsp::ProcessSpec spec;
+	spec.sampleRate = sampleRate;
+	spec.maximumBlockSize = samplesPerBlock;
+	spec.numChannels = getTotalNumOutputChannels();
+
+	lowPassFilter.prepare(spec);
+	lowPassFilter.reset();
+	highPassFilter.prepare(spec);
+	highPassFilter.reset();
 
 	updateADSR();
 	updateVolume();
@@ -144,6 +158,7 @@ bool TexturizeAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts)
 }
 #endif
 
+
 void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
 	juce::ScopedNoDenormals noDenormals;
@@ -166,9 +181,9 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	//update values from gui
 	if (mShouldUpdate)
 	{
+		updateFilters();
 		updateADSR();
 		updateVolume();
-		updateFilters();
 	}
 
 	//get play head position
@@ -205,10 +220,6 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	mSynthBuffer.makeCopyOf(buffer, false);
 	mSampler.renderNextBlock(mSynthBuffer, midiMessages, 0, mSynthBuffer.getNumSamples());
 
-	//updating filters
-
-
-
 	//audio processing
 	for (auto channel = 0; channel < mSynthBuffer.getNumChannels(); ++channel)
 	{
@@ -220,6 +231,11 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 			channelData[sample] = mSynthBuffer.getSample(channel, sample) * mWetVolume;
 		}
 	}
+
+	//updating filters
+	juce::dsp::AudioBlock<float> block(mSynthBuffer);
+	lowPassFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
+	highPassFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
 
 	for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
 	{
@@ -299,16 +315,19 @@ void TexturizeAudioProcessor::updateADSR()
 	}
 }
 
-void TexturizeAudioProcessor::updateVolume()
-{
-	mDryVolume = pow(10, mAPVTS.getRawParameterValue("DRY")->load() / 20);
-	mWetVolume = pow(10, mAPVTS.getRawParameterValue("WET")->load() / 20);
-}
-
 void TexturizeAudioProcessor::updateFilters()
 {
 	mLpCutoffFrequency = mAPVTS.getRawParameterValue("LP")->load();
 	mHpCutoffFrequency = mAPVTS.getRawParameterValue("HP")->load();
+
+	*lowPassFilter.state = *juce::dsp::IIR::Coefficients<float>::makeLowPass(mSampleRate, mLpCutoffFrequency, 1.0f);
+	*highPassFilter.state = *juce::dsp::IIR::Coefficients<float>::makeHighPass(mSampleRate, mHpCutoffFrequency, 1.0f);
+}
+
+void TexturizeAudioProcessor::updateVolume()
+{
+	mDryVolume = pow(10, mAPVTS.getRawParameterValue("DRY")->load() / 20);
+	mWetVolume = pow(10, mAPVTS.getRawParameterValue("WET")->load() / 20);
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::createParameters()
@@ -325,8 +344,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::cre
 
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("THRESHOLD", "Threshold", -60.0f, 6.0f, -30.0f));
 
-	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LP", "Low Pass", 20.0f, 20000.0f, 20000.0f));
-	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("HP", "High Pass", 20.0f, 20000.0f, 20000.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("LP", "Low Pass",
+		juce::NormalisableRange{ 20.0f, 20000.0f, 0.1f, 0.2f, false }, 20000.0f));
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("HP", "High Pass", 
+		juce::NormalisableRange{ 20.0f, 20000.0f, 0.1f, 0.2f, false }, 20.0f));
 
 	return { parameters.begin(), parameters.end() };
 }
