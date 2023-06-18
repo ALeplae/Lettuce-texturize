@@ -39,14 +39,16 @@ DynamicLevel::~DynamicLevel()
 
 void DynamicLevel::paint (juce::Graphics& g)
 {
-
+	g.fillAll(juce::Colours::yellow);
 }
 
 void DynamicLevel::resized()
 {
+	/*
 	const int size{100};
 	const int border{ 30 };
 	mDynamicLevelSlider.setBounds(0, 100, size, size);
 
 	mSetDynamicButton.setBounds(0, 0, size, size / 2);
+	*/
 }

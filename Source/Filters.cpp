@@ -50,10 +50,12 @@ Filters::~Filters()
 
 void Filters::paint (juce::Graphics& g)
 {
+	g.fillAll(juce::Colours::black);
 }
 
 void Filters::resized()
 {
+	/*
 	int size;
 
 	if (getWidth() / 2 < getHeight())
@@ -65,16 +67,14 @@ void Filters::resized()
 		size = getHeight();
 	}
 
-	
 	const int maxSize{ 100 };
 	if (size >= maxSize)
 	{
 		size = maxSize;
 	}
-	
-
 
 	const int border{ 30 };
 	mLowPassSlider.setBounds(0, border, size, size);
 	mHighPassSlider.setBounds(size, border, size, size);
+	*/
 }

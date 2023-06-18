@@ -47,6 +47,14 @@ VolumeSliders::~VolumeSliders()
 void VolumeSliders::paint (juce::Graphics& g)
 {
     g.fillAll(juce::Colours::green);
+
+    int textWidth{ 100 };
+    int textHeight{ 50 };
+
+    g.setFont(30.f);
+    g.setColour(juce::Colours::white);
+    g.drawText("Output", getWidth() / 2 - textWidth / 2, mBorder / 2, textWidth, textHeight, juce::Justification::centred);
+
 }
 
 void VolumeSliders::resized()

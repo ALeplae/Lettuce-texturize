@@ -41,12 +41,11 @@ void TexturizeAudioProcessorEditor::resized()
 {
 	mLevelMeter.setBoundsRelative(0.f, 0.f, 0.25f, 1.f);
 
-	mWaveForm.setBoundsRelative(0.25f, 0.f, 0.5f, 0.25f);
-
-	mADSR.setBoundsRelative(0.25f, 0.f, 0.5f, 0.25f);
-	mFilters.setBoundsRelative(0.25f, 0.55f, 0.35f, 0.25f);
-	mPanner.setBoundsRelative(0.6f, 0.55f, 0.15f, 0.25f);
-	mDynamicLevel.setBoundsRelative(0.6f, 0.55f, 0.15f, 0.25f);
+	mWaveForm.setBoundsRelative(0.25f, 0.f, 0.5f, 0.3f);
+	mDynamicLevel.setBoundsRelative(0.5f, 0.3f, 0.25f, 0.45f);
+	mFilters.setBoundsRelative(0.25f, 0.3f, 0.25f, 0.225f);
+	mPanner.setBoundsRelative(0.25f, 0.525f, 0.25f, 0.225f);
+	mADSR.setBoundsRelative(0.25f, 0.75f, 0.5f, 0.25f);
 
 	mVolumeSliders.setBoundsRelative(0.75f, 0.f, 0.25f, 1.f);
 }

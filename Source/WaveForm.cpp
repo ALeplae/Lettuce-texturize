@@ -25,8 +25,6 @@ WaveForm::~WaveForm()
 
 void WaveForm::paint (juce::Graphics& g)
 {
-
-
 	auto waveform = audioProcessor.getWaveForm();
 
 	const int waveFormHeight{ getHeight() / 5 * 3 };
@@ -78,7 +76,9 @@ void WaveForm::paint (juce::Graphics& g)
 
 void WaveForm::resized()
 {
+	/*
 	mLoadButton.setBounds(0, 0, getWidth(), getHeight()/5*2);
+	*/
 }
 
 void WaveForm::clickLoadButton()
@@ -154,11 +154,9 @@ void WaveForm::loadFile()
 
 void WaveForm::loadFile(const juce::String& path)
 {
-	/*
 	auto file = juce::File(path);
 	audioProcessor.fileSetup(file);
 	audioProcessor.root = file.getParentDirectory().getFullPathName();
 	audioProcessor.savedFile = file;
 	renameLoadButton();
-	*/
 }

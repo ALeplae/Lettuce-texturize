@@ -35,7 +35,7 @@ Panner::~Panner()
 
 void Panner::paint (juce::Graphics& g)
 {
-    
+    g.fillAll(juce::Colours::white);
 }
 
 void Panner::resized()

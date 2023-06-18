@@ -26,11 +26,13 @@ public:
     void resized() override;
 
 private:
-    const float mBorder{ 30.0f };
+    float mBorder{ 30.0f };
+    float mWidth{ 100.0f };
 
+    const int textWidth{ 100 };
+    const int textHeight{ 50 };
 
     juce::Slider mThresholdSlider;
-    juce::Label mThresholdLabel;
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mThresholdAttachment;
 

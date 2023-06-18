@@ -20,10 +20,6 @@ LevelMeters::LevelMeters(TexturizeAudioProcessor& p) : audioProcessor(p)
     mThresholdSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
     mThresholdSlider.setAlpha(0.0f);
     addAndMakeVisible(mThresholdSlider);
-    mThresholdLabel.setFont(fontSize);
-    mThresholdLabel.setText("Threshold", juce::NotificationType::dontSendNotification);
-    mThresholdLabel.setJustificationType(juce::Justification::centredTop);
-    mThresholdLabel.attachToComponent(&mThresholdSlider, false);
 
     mThresholdAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         audioProcessor.getAPVTS(), "THRESHOLD", mThresholdSlider);
@@ -36,48 +32,46 @@ LevelMeters::~LevelMeters()
 
 void LevelMeters::paint (juce::Graphics& g)
 {
+    g.setFont(30.f);
+    g.setColour(juce::Colours::white);
+    g.drawText("Input", getWidth()/2 -textWidth/2, mBorder/2, textWidth, textHeight, juce::Justification::centred);
+
     const auto sliderPos = getHeight() - juce::jmap<float>(
-        mThresholdSlider.getValue(), -60.f, +6.f, 0.f, static_cast<float>(getHeight() - mBorder));
+        mThresholdSlider.getValue(), -60.f, +6.f, (mBorder + textHeight), static_cast<float>(getHeight() - (mBorder + textHeight)));
 
     auto bounds = getLocalBounds().toFloat();
-    bounds.removeFromRight(mBorder);
-    bounds.removeFromTop(mBorder);
+    bounds.removeFromRight((getWidth() - mWidth) / 2);
+    bounds.removeFromLeft((getWidth() - mWidth) / 2);
+    bounds.removeFromTop(mBorder + textHeight);
+    bounds.removeFromBottom(mBorder + textHeight);
 
     g.setColour(juce::Colours::white.withBrightness(0.4f));
     g.fillRect(bounds);
 
-    const auto scaledY = juce::jmap<float>(audioProcessor.getRMSLevel(), -60.f, +6.f, 0.f, static_cast<float>(getHeight() - mBorder));
+    const auto scaledY = juce::jmap<float>(audioProcessor.getRMSLevel(), -60.f, +6.f, mBorder + textHeight, static_cast<float>(getHeight() - mBorder));
     
     if (scaledY <= getHeight() - sliderPos)
     {
         g.setColour(juce::Colours::white);
-        g.fillRect(bounds.removeFromBottom(scaledY));
+        bounds.setTop(getHeight() - scaledY);
+        g.fillRect(bounds);
     }
     else
     {
         g.setColour(juce::Colours::red);
-        g.fillRect(bounds.removeFromBottom(scaledY));
-
-        bounds = getLocalBounds().toFloat();
-        bounds.removeFromRight(mBorder);
-        bounds.removeFromTop(mBorder);
+        bounds.setTop(getHeight() - scaledY);
+        g.fillRect(bounds);
 
         g.setColour(juce::Colours::white);
-        g.fillRect(bounds.removeFromBottom(getHeight() - sliderPos));
+        bounds.setTop(sliderPos);
+        g.fillRect(bounds);
     }
 
     g.setColour(juce::Colours::black);
-    g.drawLine(0, sliderPos, getWidth() - mBorder, sliderPos);
-
-
-
-
-    g.fillAll(juce::Colours::red);
+    g.drawLine((getWidth() - mWidth) / 2, sliderPos, getWidth()/2 + mWidth/ 2, sliderPos, 2.f);
 }
 
 void LevelMeters::resized()
 {
-    /*
-    mThresholdSlider.setBounds(0, mBorder, getWidth() - mBorder, getHeight() - mBorder);
-    */
+    mThresholdSlider.setBounds((getWidth() - mWidth) / 2, mBorder + textHeight, mWidth, getHeight() - (mBorder + textHeight) *2 );
 }

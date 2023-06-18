@@ -72,10 +72,13 @@ ADSRComponent::~ADSRComponent()
 
 void ADSRComponent::paint(juce::Graphics& g)
 {
+	g.fillAll(juce::Colours::magenta);
 }
 
 void ADSRComponent::resized()
 {
+	/*
+
 	int size;
 
 	if (getWidth() / 4 < getHeight()) 
@@ -87,18 +90,18 @@ void ADSRComponent::resized()
 		size = getHeight();
 	}
 
-	/*
+	
 	const int maxSize{ 50 };
 	if (size >= maxSize) 
 	{
 		size = maxSize;
 	}
-	*/
+	
 
 	const int border{ 30 };
 	mAttackSlider.setBounds(0, border, size, size);
 	mDecaySlider.setBounds(size, border, size, size);
 	mSustainSlider.setBounds(size * 2, border, size, size);
 	mReleaseSlider.setBounds(size * 3, border, size, size);
-
+	*/
 }
