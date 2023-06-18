@@ -139,6 +139,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Panner.cpp"/>
     <ClCompile Include="..\..\Source\Filters.cpp"/>
     <ClCompile Include="..\..\Source\LevelMeters.cpp"/>
     <ClCompile Include="..\..\Source\WaveForm.cpp"/>
@@ -2427,6 +2428,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Panner.h"/>
     <ClInclude Include="..\..\Source\Filters.h"/>
     <ClInclude Include="..\..\Source\LevelMeters.h"/>
     <ClInclude Include="..\..\Source\WaveForm.h"/>

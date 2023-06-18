@@ -11,13 +11,15 @@
 
 //==============================================================================
 TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProcessor& p)
-	: AudioProcessorEditor(&p), mWaveForm(p), mADSR(p), mVolumeSliders(p), mLevelMeter(p), mFilters(p), audioProcessor(p)
+	: AudioProcessorEditor(&p), mWaveForm(p), mADSR(p), mVolumeSliders(p), 
+	mPanner(p), mLevelMeter(p), mFilters(p), audioProcessor(p)
 {
 	addAndMakeVisible(mWaveForm);
 	addAndMakeVisible(mADSR);
 	addAndMakeVisible(mVolumeSliders);
 	addAndMakeVisible(mLevelMeter);
 	addAndMakeVisible(mFilters);
+	addAndMakeVisible(mPanner);
 
 	startTimerHz(30);
 	setSize(900, 600);
@@ -40,7 +42,8 @@ void TexturizeAudioProcessorEditor::resized()
 
 	mWaveForm.setBoundsRelative(0.25f, 0.05f, 0.5f, 0.1f);
 	mADSR.setBoundsRelative(0.25f, 0.3f, 0.5f, 0.25f);
-	mFilters.setBoundsRelative(0.25f, 0.55f, 0.5f, 0.25f);
+	mFilters.setBoundsRelative(0.25f, 0.55f, 0.35f, 0.25f);
+	mPanner.setBoundsRelative(0.6f, 0.55f, 0.15f, 0.25f);
 
 	mVolumeSliders.setBoundsRelative(0.75f, 0.05f, 0.25f, 0.8f);
 }

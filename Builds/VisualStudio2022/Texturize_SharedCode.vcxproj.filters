@@ -604,6 +604,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Panner.cpp">
+      <Filter>Texturize\features</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Filters.cpp">
       <Filter>Texturize\features</Filter>
     </ClCompile>
@@ -3063,6 +3066,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Panner.h">
+      <Filter>Texturize\features</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Filters.h">
       <Filter>Texturize\features</Filter>
     </ClInclude>

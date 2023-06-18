@@ -71,8 +71,6 @@ public:
 
 	float& getRMSLevel() { return mRMSLevel; }
 
-	void updateFilters();
-
 private:
 	juce::Synthesiser mSampler;
 	const int mNumVoices{ 3 };
@@ -91,8 +89,13 @@ private:
 
 	void updateADSR();
 
+	void updateFilters();
+
 	void updateVolume();
 	float mDryVolume, mWetVolume;
+
+	void updatePan();
+	float mPanAmount;
 
 	float mRMSLevel, mTotalRMS;
 

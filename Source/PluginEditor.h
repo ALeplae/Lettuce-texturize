@@ -15,6 +15,7 @@
 #include "VolumeSliders.h"
 #include "LevelMeters.h"
 #include "Filters.h"
+#include "Panner.h"
 
 
 //==============================================================================
@@ -40,6 +41,7 @@ private:
     VolumeSliders mVolumeSliders;
     LevelMeters mLevelMeter;
     Filters mFilters;
+    Panner mPanner;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

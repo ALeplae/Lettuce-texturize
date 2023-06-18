@@ -5,6 +5,8 @@
               pluginCharacteristicsValue="pluginWantsMidiIn">
   <MAINGROUP id="EKYHEO" name="Texturize">
     <GROUP id="{7160A4D9-BF2D-E903-7C69-D68507E51057}" name="features">
+      <FILE id="xu1B1D" name="Panner.cpp" compile="1" resource="0" file="Source/Panner.cpp"/>
+      <FILE id="yYumRn" name="Panner.h" compile="0" resource="0" file="Source/Panner.h"/>
       <FILE id="vPnAqL" name="Filters.cpp" compile="1" resource="0" file="Source/Filters.cpp"/>
       <FILE id="m1ffI3" name="Filters.h" compile="0" resource="0" file="Source/Filters.h"/>
       <FILE id="hwopmI" name="LevelMeters.cpp" compile="1" resource="0" file="Source/LevelMeters.cpp"/>

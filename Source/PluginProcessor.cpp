@@ -124,6 +124,7 @@ void TexturizeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlo
 	updateADSR();
 	updateVolume();
 	updateFilters();
+	updatePan();
 }
 
 void TexturizeAudioProcessor::releaseResources()
@@ -184,6 +185,7 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		updateFilters();
 		updateADSR();
 		updateVolume();
+		updatePan();
 	}
 
 	//get play head position
@@ -224,11 +226,26 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	for (auto channel = 0; channel < mSynthBuffer.getNumChannels(); ++channel)
 	{
 		auto* channelData = mSynthBuffer.getWritePointer(channel);
+
+		float leftGain = std::sqrt(0.5f - (mPanAmount * 0.5f));
+		float rightGain = std::sqrt(0.5f + (mPanAmount * 0.5f));
+
 		for (auto sample = 0; sample < mSynthBuffer.getNumSamples(); ++sample)
 		{
 			channelData[sample] -= buffer.getSample(channel, sample);
+
 			//updating wet volume
 			channelData[sample] = mSynthBuffer.getSample(channel, sample) * mWetVolume;
+			
+			//updating panning
+			if (channel == 0)
+			{
+				channelData[sample] *= leftGain;
+			}
+			else
+			{
+				channelData[sample] *= rightGain;
+			}
 		}
 	}
 
@@ -236,6 +253,7 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	juce::dsp::AudioBlock<float> block(mSynthBuffer);
 	lowPassFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
 	highPassFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
+
 
 	for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
 	{
@@ -296,6 +314,7 @@ void TexturizeAudioProcessor::fileSetup(juce::File file)
 	updateADSR();
 	updateVolume();
 	updateFilters();
+	updatePan();
 }
 
 void TexturizeAudioProcessor::updateADSR() 
@@ -330,6 +349,11 @@ void TexturizeAudioProcessor::updateVolume()
 	mWetVolume = pow(10, mAPVTS.getRawParameterValue("WET")->load() / 20);
 }
 
+void TexturizeAudioProcessor::updatePan()
+{
+	mPanAmount = mAPVTS.getRawParameterValue("PAN")->load();
+}
+
 juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::createParameters()
 {
 	std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
@@ -348,6 +372,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout TexturizeAudioProcessor::cre
 		juce::NormalisableRange{ 20.0f, 20000.0f, 0.1f, 0.2f, false }, 20000.0f));
 	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("HP", "High Pass", 
 		juce::NormalisableRange{ 20.0f, 20000.0f, 0.1f, 0.2f, false }, 20.0f));
+
+	parameters.push_back(std::make_unique<juce::AudioParameterFloat>("PAN", "Pan", -1.0f, 1.0f, 0.0f));
 
 	return { parameters.begin(), parameters.end() };
 }
