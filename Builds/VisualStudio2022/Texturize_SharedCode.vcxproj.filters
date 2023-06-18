@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Texturize\Input/output">
+      <UniqueIdentifier>{E7210516-3E74-148B-05AD-27F8215BC470}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Texturize\features">
       <UniqueIdentifier>{2F154917-BB8E-8531-DEC1-022CA73940DE}</UniqueIdentifier>
     </Filter>
@@ -604,22 +607,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LevelMeters.cpp">
+      <Filter>Texturize\Input/output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\VolumeSliders.cpp">
+      <Filter>Texturize\Input/output</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\DynamicLevel.cpp">
+      <Filter>Texturize\features</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Panner.cpp">
       <Filter>Texturize\features</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Filters.cpp">
       <Filter>Texturize\features</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\LevelMeters.cpp">
-      <Filter>Texturize\features</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\WaveForm.cpp">
       <Filter>Texturize\features</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\ADSRComponent.cpp">
-      <Filter>Texturize\features</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\VolumeSliders.cpp">
       <Filter>Texturize\features</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
@@ -3066,22 +3072,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\LevelMeters.h">
+      <Filter>Texturize\Input/output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\VolumeSliders.h">
+      <Filter>Texturize\Input/output</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\DynamicLevel.h">
+      <Filter>Texturize\features</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Panner.h">
       <Filter>Texturize\features</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Filters.h">
       <Filter>Texturize\features</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\LevelMeters.h">
-      <Filter>Texturize\features</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\WaveForm.h">
       <Filter>Texturize\features</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\ADSRComponent.h">
-      <Filter>Texturize\features</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\VolumeSliders.h">
       <Filter>Texturize\features</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">

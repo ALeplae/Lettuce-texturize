@@ -179,6 +179,8 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	mRMSLevel = juce::Decibels::gainToDecibels(mTotalRMS / totalNumInputChannels);
 	mTotalRMS = 0;
 
+
+
 	//update values from gui
 	if (mShouldUpdate)
 	{
@@ -209,6 +211,7 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 		}
 	}
 
+
 	if(mIsNotePlayed)
 	{
 		mSampleCount = mSampleCount + buffer.getNumSamples() * mMidiNoteHz;
@@ -227,6 +230,9 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 	{
 		auto* channelData = mSynthBuffer.getWritePointer(channel);
 
+		
+		float channelRMSLevel = juce::jmap<float>(buffer.getRMSLevel(channel, 0, buffer.getNumSamples()), 0.f, 0.3f, 0.0f, 1.0f);
+
 		float leftGain = std::sqrt(0.5f - (mPanAmount * 0.5f));
 		float rightGain = std::sqrt(0.5f + (mPanAmount * 0.5f));
 
@@ -235,8 +241,9 @@ void TexturizeAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juc
 			channelData[sample] -= buffer.getSample(channel, sample);
 
 			//updating wet volume
-			channelData[sample] = mSynthBuffer.getSample(channel, sample) * mWetVolume;
+			channelData[sample] = mSynthBuffer.getSample(channel, sample) * mWetVolume * channelRMSLevel;
 			
+
 			//updating panning
 			if (channel == 0)
 			{

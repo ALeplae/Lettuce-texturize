@@ -139,12 +139,13 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LevelMeters.cpp"/>
+    <ClCompile Include="..\..\Source\VolumeSliders.cpp"/>
+    <ClCompile Include="..\..\Source\DynamicLevel.cpp"/>
     <ClCompile Include="..\..\Source\Panner.cpp"/>
     <ClCompile Include="..\..\Source\Filters.cpp"/>
-    <ClCompile Include="..\..\Source\LevelMeters.cpp"/>
     <ClCompile Include="..\..\Source\WaveForm.cpp"/>
     <ClCompile Include="..\..\Source\ADSRComponent.cpp"/>
-    <ClCompile Include="..\..\Source\VolumeSliders.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
@@ -2428,12 +2429,13 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\LevelMeters.h"/>
+    <ClInclude Include="..\..\Source\VolumeSliders.h"/>
+    <ClInclude Include="..\..\Source\DynamicLevel.h"/>
     <ClInclude Include="..\..\Source\Panner.h"/>
     <ClInclude Include="..\..\Source\Filters.h"/>
-    <ClInclude Include="..\..\Source\LevelMeters.h"/>
     <ClInclude Include="..\..\Source\WaveForm.h"/>
     <ClInclude Include="..\..\Source\ADSRComponent.h"/>
-    <ClInclude Include="..\..\Source\VolumeSliders.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>
     <ClInclude Include="..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>

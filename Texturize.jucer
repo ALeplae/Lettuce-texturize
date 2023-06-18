@@ -4,21 +4,26 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginCharacteristicsValue="pluginWantsMidiIn">
   <MAINGROUP id="EKYHEO" name="Texturize">
+    <GROUP id="{C4843E5F-8C07-AA7F-ADD4-9019FEBFB973}" name="Input/output">
+      <FILE id="hwopmI" name="LevelMeters.cpp" compile="1" resource="0" file="Source/LevelMeters.cpp"/>
+      <FILE id="ZAWigj" name="LevelMeters.h" compile="0" resource="0" file="Source/LevelMeters.h"/>
+      <FILE id="IBGkuQ" name="VolumeSliders.cpp" compile="1" resource="0"
+            file="Source/VolumeSliders.cpp"/>
+      <FILE id="C4nj9m" name="VolumeSliders.h" compile="0" resource="0" file="Source/VolumeSliders.h"/>
+    </GROUP>
     <GROUP id="{7160A4D9-BF2D-E903-7C69-D68507E51057}" name="features">
+      <FILE id="mfOots" name="DynamicLevel.cpp" compile="1" resource="0"
+            file="Source/DynamicLevel.cpp"/>
+      <FILE id="pHLNCO" name="DynamicLevel.h" compile="0" resource="0" file="Source/DynamicLevel.h"/>
       <FILE id="xu1B1D" name="Panner.cpp" compile="1" resource="0" file="Source/Panner.cpp"/>
       <FILE id="yYumRn" name="Panner.h" compile="0" resource="0" file="Source/Panner.h"/>
       <FILE id="vPnAqL" name="Filters.cpp" compile="1" resource="0" file="Source/Filters.cpp"/>
       <FILE id="m1ffI3" name="Filters.h" compile="0" resource="0" file="Source/Filters.h"/>
-      <FILE id="hwopmI" name="LevelMeters.cpp" compile="1" resource="0" file="Source/LevelMeters.cpp"/>
-      <FILE id="ZAWigj" name="LevelMeters.h" compile="0" resource="0" file="Source/LevelMeters.h"/>
       <FILE id="lttY0X" name="WaveForm.cpp" compile="1" resource="0" file="Source/WaveForm.cpp"/>
       <FILE id="lw8zze" name="WaveForm.h" compile="0" resource="0" file="Source/WaveForm.h"/>
       <FILE id="gF7q3D" name="ADSRComponent.cpp" compile="1" resource="0"
             file="Source/ADSRComponent.cpp"/>
       <FILE id="HGj7I6" name="ADSRComponent.h" compile="0" resource="0" file="Source/ADSRComponent.h"/>
-      <FILE id="IBGkuQ" name="VolumeSliders.cpp" compile="1" resource="0"
-            file="Source/VolumeSliders.cpp"/>
-      <FILE id="C4nj9m" name="VolumeSliders.h" compile="0" resource="0" file="Source/VolumeSliders.h"/>
     </GROUP>
     <GROUP id="{05603D65-5D3D-79CE-2B9A-1B5B95ED393B}" name="Source">
       <FILE id="kePuhz" name="PluginProcessor.cpp" compile="1" resource="0"
