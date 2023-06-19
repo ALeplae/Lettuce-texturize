@@ -32,6 +32,8 @@ public:
     bool mShouldBePainting{ false };
 
 private:
+    const int mBorder{ 30 };
+
     std::unique_ptr<juce::FileChooser> fileChooser;
 
     juce::TextButton mLoadButton;

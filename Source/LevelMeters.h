@@ -26,8 +26,8 @@ public:
     void resized() override;
 
 private:
-    float mBorder{ 30.0f };
-    float mWidth{ 100.0f };
+    const int mBorder{ 30 };
+    const int mWidth{ 100 };
 
     const int textWidth{ 100 };
     const int textHeight{ 50 };

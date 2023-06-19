@@ -27,19 +27,19 @@ void WaveForm::paint (juce::Graphics& g)
 {
 	auto waveform = audioProcessor.getWaveForm();
 
-	const int waveFormHeight{ getHeight() / 5 * 3 };
-	const int waveFormYPos{ getHeight() / 5 * 2 };
+	const int waveFormYPos{ getHeight() / 5 + mBorder };
+	const int waveFormHeight{ getHeight() / 5 * 4 - mBorder };
 
 	g.fillAll(juce::Colours::cadetblue.darker());
-	//g.fillRect(0, waveFormYPos, getWidth(), waveFormHeight);
-
+	g.setColour(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+	g.fillRect(0, 0, getWidth(), getHeight() - waveFormHeight);
 
 	if (waveform.getNumSamples() > 0)
 	{
+		g.setColour(juce::Colours::black);
 
 		juce::Path p;
 		mAudioPoints.clear();
-
 
 		auto ratio = waveform.getNumSamples() / getWidth();
 		auto buffer = waveform.getReadPointer(0);
@@ -66,15 +66,18 @@ void WaveForm::paint (juce::Graphics& g)
 			audioProcessor.getWaveForm().getNumSamples(), 0, getWidth());
 
 		g.setColour(juce::Colours::white);
-		g.drawLine(playHeadPosition, 0, playHeadPosition, getHeight(), 2.0f);
+		g.drawLine(playHeadPosition, waveFormYPos, playHeadPosition, getHeight(), 2.0f);
 		g.setColour(juce::Colours::black.withAlpha (0.2f));
-		g.fillRect(0, 0, playHeadPosition, getHeight());
+		g.fillRect(0, waveFormYPos, playHeadPosition, getHeight());
+		g.fillRect(0, waveFormYPos, playHeadPosition, getHeight());
 	}
+	g.setColour(juce::Colours::darkgrey);
+	g.drawRect(0, waveFormYPos, getWidth(), waveFormHeight, 3);
 }
 
 void WaveForm::resized()
 {
-	mLoadButton.setBounds(0, 0, getWidth(), getHeight()/5*2);
+	mLoadButton.setBounds(mBorder, mBorder, getWidth() - mBorder*2, getHeight()/5);
 }
 
 void WaveForm::clickLoadButton()
