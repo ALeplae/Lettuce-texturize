@@ -24,11 +24,16 @@ DynamicLevel::DynamicLevel(TexturizeAudioProcessor& p) : audioProcessor(p)
 	mDynamicLevelLabel.setText("Intensity", juce::NotificationType::dontSendNotification);
 	mDynamicLevelLabel.setJustificationType(juce::Justification::centredTop);
 	mDynamicLevelLabel.attachToComponent(&mDynamicLevelSlider, false);
+	mDynamicLevelLabel.setColour(juce::Label::textColourId, juce::Colours::black);
+
 	mDynamicLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
 		audioProcessor.getAPVTS(), "DYN_INT", mDynamicLevelSlider);
 
 	mSetDynamicButton.setButtonText("Set dynamic level");
 	mSetDynamicButton.onClick = [this] { sliderState(mSetDynamicButton.getToggleState()); };
+	mSetDynamicButton.setColour(juce::ToggleButton::textColourId, juce::Colours::black);
+	mSetDynamicButton.setColour(juce::ToggleButton::tickColourId, juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 1.0f));
+	mSetDynamicButton.setColour(juce::ToggleButton::tickDisabledColourId, juce::Colours::black);
 	addAndMakeVisible(mSetDynamicButton);
 	mSetDynamicAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
 		audioProcessor.getAPVTS(), "DYN_SET", mSetDynamicButton);

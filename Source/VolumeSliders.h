@@ -13,6 +13,8 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+
+
 //==============================================================================
 /*
 */
@@ -36,6 +38,8 @@ private:
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mDryAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mWetAttachment;
+
+
 
     TexturizeAudioProcessor& audioProcessor;
 

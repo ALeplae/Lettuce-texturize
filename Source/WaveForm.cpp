@@ -30,13 +30,13 @@ void WaveForm::paint (juce::Graphics& g)
 	const int waveFormYPos{ getHeight() / 5 + mBorder };
 	const int waveFormHeight{ getHeight() / 5 * 4 - mBorder };
 
-	g.fillAll(juce::Colours::cadetblue.darker());
-	g.setColour(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+	g.fillAll(juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 0.2f));;
+	g.setColour(juce::Colours::white);
 	g.fillRect(0, 0, getWidth(), getHeight() - waveFormHeight);
 
 	if (waveform.getNumSamples() > 0)
 	{
-		g.setColour(juce::Colours::black);
+		g.setColour(juce::Colours::black.withAlpha(0.8f));
 
 		juce::Path p;
 		mAudioPoints.clear();
@@ -71,8 +71,8 @@ void WaveForm::paint (juce::Graphics& g)
 		g.fillRect(0, waveFormYPos, playHeadPosition, getHeight());
 		g.fillRect(0, waveFormYPos, playHeadPosition, getHeight());
 	}
-	g.setColour(juce::Colours::darkgrey);
-	g.drawRect(0, waveFormYPos, getWidth(), waveFormHeight, 3);
+	g.setColour(juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 1.f));
+	g.drawRect(0, waveFormYPos, getWidth(), waveFormHeight, 2);
 }
 
 void WaveForm::resized()

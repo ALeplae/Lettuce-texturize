@@ -22,6 +22,9 @@
 //==============================================================================
 /**
 */
+
+
+
 class TexturizeAudioProcessorEditor  : public juce::AudioProcessorEditor,
                                        public juce::Timer
 {
@@ -37,6 +40,8 @@ public:
 
      
 private:
+    const float border{ 30 };
+
     WaveForm mWaveForm;
     ADSRComponent mADSR;
     VolumeSliders mVolumeSliders;

@@ -21,24 +21,28 @@ Filters::Filters(TexturizeAudioProcessor& p) : audioProcessor(p)
 
 	//Low pass
 	mLowPassSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
-	mLowPassSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	mLowPassSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 60, 20);
+	mLowPassSlider.setTextValueSuffix("Hz");
 	addAndMakeVisible(mLowPassSlider);
 	mLowPassLabel.setFont(fontSize);
 	mLowPassLabel.setText("Lp", juce::NotificationType::dontSendNotification);
 	mLowPassLabel.setJustificationType(juce::Justification::centredTop);
 	mLowPassLabel.attachToComponent(&mLowPassSlider, false);
+	mLowPassLabel.setColour(juce::Label::textColourId, juce::Colours::black);
 
 	mLowPassAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
 		audioProcessor.getAPVTS(), "LP", mLowPassSlider);
 
 	//High pass
 	mHighPassSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
-	mHighPassSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	mHighPassSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 60, 20);
+	mHighPassSlider.setTextValueSuffix("Hz");
 	addAndMakeVisible(mHighPassSlider);
 	mHighPassLabel.setFont(fontSize);
 	mHighPassLabel.setText("Hp", juce::NotificationType::dontSendNotification);
 	mHighPassLabel.setJustificationType(juce::Justification::centredTop);
 	mHighPassLabel.attachToComponent(&mHighPassSlider, false);
+	mHighPassLabel.setColour(juce::Label::textColourId, juce::Colours::black);
 
 	mHighPassAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
 		audioProcessor.getAPVTS(), "HP", mHighPassSlider);
@@ -50,31 +54,12 @@ Filters::~Filters()
 
 void Filters::paint (juce::Graphics& g)
 {
-	g.fillAll(juce::Colours::black);
 }
 
 void Filters::resized()
 {
-	/*
-	int size;
-
-	if (getWidth() / 2 < getHeight())
-	{
-		size = getWidth() / 2;
-	}
-	else
-	{
-		size = getHeight();
-	}
-
-	const int maxSize{ 100 };
-	if (size >= maxSize)
-	{
-		size = maxSize;
-	}
-
+	const int size{ 100 };
 	const int border{ 30 };
-	mLowPassSlider.setBounds(0, border, size, size);
-	mHighPassSlider.setBounds(size, border, size, size);
-	*/
+	mLowPassSlider.setBounds(getWidth() / 3 - size / 2, getHeight() - size, size, size);
+	mHighPassSlider.setBounds(getWidth() / 3 * 2 - size / 2, getHeight() - size, size, size);
 }

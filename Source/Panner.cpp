@@ -24,6 +24,7 @@ Panner::Panner(TexturizeAudioProcessor& p) : audioProcessor(p)
     mPannerLabel.setText("Pan", juce::NotificationType::dontSendNotification);
     mPannerLabel.setJustificationType(juce::Justification::centredTop);
     mPannerLabel.attachToComponent(&mPannerSlider, false);
+    mPannerLabel.setColour(juce::Label::textColourId, juce::Colours::black);
 
     mPannerAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         audioProcessor.getAPVTS(), "PAN", mPannerSlider);
@@ -35,7 +36,6 @@ Panner::~Panner()
 
 void Panner::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::white);
 }
 
 void Panner::resized()
@@ -43,5 +43,5 @@ void Panner::resized()
     const int size{ 100 };
     const int border{ 30 };
 
-    mPannerSlider.setBounds(0, border, size, size);
+    mPannerSlider.setBounds(getWidth()/2 - size/2, getHeight() - size, size, size);
 }

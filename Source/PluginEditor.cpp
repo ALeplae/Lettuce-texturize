@@ -14,6 +14,7 @@ TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProce
 	: AudioProcessorEditor(&p), mWaveForm(p), mADSR(p), mVolumeSliders(p), 
 	mPanner(p), mLevelMeter(p), mFilters(p), mDynamicLevel(p), audioProcessor(p)
 {
+
 	addAndMakeVisible(mWaveForm);
 	addAndMakeVisible(mADSR);
 	addAndMakeVisible(mVolumeSliders);
@@ -22,6 +23,15 @@ TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProce
 	addAndMakeVisible(mPanner);
 	addAndMakeVisible(mDynamicLevel);
 
+	getLookAndFeel().setColour(juce::Slider::backgroundColourId, juce::Colours::black.withAlpha(0.2f));
+	getLookAndFeel().setColour(juce::Slider::trackColourId, juce::Colours::black.withAlpha(0.2f));
+	getLookAndFeel().setColour(juce::Slider::thumbColourId, juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 1.0f));
+	getLookAndFeel().setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
+	getLookAndFeel().setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::black);
+	getLookAndFeel().setColour(juce::TextButton::buttonColourId, juce::Colours::white);
+	getLookAndFeel().setColour(juce::TextButton::textColourOffId, juce::Colours::black);
+
+
 	startTimerHz(30);
 	setSize(900, 600);
 }
@@ -29,12 +39,18 @@ TexturizeAudioProcessorEditor::TexturizeAudioProcessorEditor(TexturizeAudioProce
  TexturizeAudioProcessorEditor::~TexturizeAudioProcessorEditor()
 {
 	 stopTimer();
+
+	 setLookAndFeel(nullptr);
 }
 
 //==============================================================================
 void TexturizeAudioProcessorEditor::paint(juce::Graphics& g)
 {
-	g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+	g.fillAll(juce::Colours::white);
+
+	g.setColour(juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 1.f));
+	g.drawLine(getWidth() * 0.25f, getHeight() * 0.3f + border, getWidth() * 0.25f, getHeight() - border, 2.0f);
+	g.drawLine(getWidth() * 0.75f, getHeight() * 0.3f + border, getWidth() * 0.75f, getHeight() - border, 2.0f);
 }
 
 void TexturizeAudioProcessorEditor::resized()

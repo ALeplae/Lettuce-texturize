@@ -23,10 +23,11 @@ VolumeSliders::VolumeSliders(TexturizeAudioProcessor& p) : audioProcessor(p)
     mDryLabel.setText("Dry", juce::NotificationType::dontSendNotification);
     mDryLabel.setJustificationType(juce::Justification::centredTop);
     mDryLabel.attachToComponent(&mDrySlider, false);
+    mDryLabel.setColour(juce::Label::textColourId, juce::Colours::black);
 
     mDryAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         audioProcessor.getAPVTS(), "DRY", mDrySlider);
-    
+
 
     //wet slider
     mWetSlider.setSliderStyle(juce::Slider::LinearVertical);
@@ -37,9 +38,18 @@ VolumeSliders::VolumeSliders(TexturizeAudioProcessor& p) : audioProcessor(p)
     mWetLabel.setText("Wet", juce::NotificationType::dontSendNotification);
     mWetLabel.setJustificationType(juce::Justification::centredTop);
     mWetLabel.attachToComponent(&mWetSlider, false);
+    mWetLabel.setColour(juce::Label::textColourId, juce::Colours::black);
 
     mWetAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
         audioProcessor.getAPVTS(), "WET", mWetSlider);
+
+
+
+/*
+mDrySlider.setLookAndFeel(&otherLookAndFeel);
+mWetSlider.setLookAndFeel(&otherLookAndFeel);
+*/
+
 }
 
 VolumeSliders::~VolumeSliders()
@@ -49,7 +59,7 @@ VolumeSliders::~VolumeSliders()
 void VolumeSliders::paint (juce::Graphics& g)
 {
     g.setFont(30.f);
-    g.setColour(juce::Colours::white);
+    g.setColour(juce::Colours::black);
     g.drawText("Output", getWidth() / 2 - textWidth / 2, mBorder / 2, textWidth, textHeight, juce::Justification::centred);
 }
 

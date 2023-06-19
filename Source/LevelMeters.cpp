@@ -33,7 +33,7 @@ LevelMeters::~LevelMeters()
 void LevelMeters::paint (juce::Graphics& g)
 {
     g.setFont(30.f);
-    g.setColour(juce::Colours::white);
+    g.setColour(juce::Colours::black);
     g.drawText("Input", getWidth()/2 -textWidth/2, mBorder/2, textWidth, textHeight, juce::Justification::centred);
 
     const auto sliderPos = getHeight() - juce::jmap<float>(
@@ -45,31 +45,36 @@ void LevelMeters::paint (juce::Graphics& g)
     bounds.removeFromTop(mBorder + textHeight);
     bounds.removeFromBottom(mBorder);
 
-    g.setColour(juce::Colours::white.withBrightness(0.4f));
-    g.fillRect(bounds);
-
     const auto scaledY = juce::jmap<float>(
         audioProcessor.getRMSLevel(), -60.f, +6.f, mBorder, static_cast<float>(getHeight() - (mBorder + textHeight)));
     
+    g.setColour(juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 1.f));
+    g.drawRect(bounds, 5.f);
+
     if (scaledY <= getHeight() - sliderPos)
     {
-        g.setColour(juce::Colours::white);
+        g.setColour(juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 0.5f));
         bounds.setTop(getHeight() - scaledY);
         g.fillRect(bounds);
     }
     else
     {
-        g.setColour(juce::Colours::red);
+        g.setColour(juce::Colours::red.withAlpha(0.5f));
         bounds.setTop(getHeight() - scaledY);
+        bounds.setBottom(sliderPos);
         g.fillRect(bounds);
 
-        g.setColour(juce::Colours::white);
+        g.setColour(juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 0.5f));
+        bounds.setBottom(getHeight() - mBorder);
         bounds.setTop(sliderPos);
         g.fillRect(bounds);
     }
+    
+    g.setColour(juce::Colour::fromFloatRGBA(0.39f, 0.65f, 1.f, 1.f));
 
-    g.setColour(juce::Colours::black);
-    g.drawLine((getWidth() - mWidth) / 2, sliderPos, getWidth()/2 + mWidth/ 2, sliderPos, 2.f);
+    const float knobWidth{120.f};
+    const float knobHeight{20.f};
+    g.fillRoundedRectangle((getWidth() -knobWidth) / 2, sliderPos - knobHeight / 2, knobWidth, knobHeight, 3.f);
 }
 
 void LevelMeters::resized()
