@@ -26,7 +26,9 @@ public:
     void resized() override;
 
 private:
-    const float mBorder{30.f};
+    const int textWidth{ 100 };
+    const int textHeight{ 50 };
+    const int mBorder{ 30 };
 
     const float mFontSize{ 20.0f };
     juce::Slider mDrySlider, mWetSlider;

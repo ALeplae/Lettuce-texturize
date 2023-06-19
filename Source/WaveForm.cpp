@@ -70,15 +70,11 @@ void WaveForm::paint (juce::Graphics& g)
 		g.setColour(juce::Colours::black.withAlpha (0.2f));
 		g.fillRect(0, 0, playHeadPosition, getHeight());
 	}
-
-	g.fillAll(juce::Colours::blue);
 }
 
 void WaveForm::resized()
 {
-	/*
 	mLoadButton.setBounds(0, 0, getWidth(), getHeight()/5*2);
-	*/
 }
 
 void WaveForm::clickLoadButton()

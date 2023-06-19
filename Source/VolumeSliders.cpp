@@ -16,7 +16,8 @@ VolumeSliders::VolumeSliders(TexturizeAudioProcessor& p) : audioProcessor(p)
 {
     //dry slider
     mDrySlider.setSliderStyle(juce::Slider::LinearVertical);
-    mDrySlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    mDrySlider.setTextBoxStyle(juce::Slider::TextBoxAbove, true, 50, 20);
+    mDrySlider.setTextValueSuffix("dB");
     addAndMakeVisible(mDrySlider);
     mDryLabel.setFont(mFontSize);
     mDryLabel.setText("Dry", juce::NotificationType::dontSendNotification);
@@ -29,7 +30,8 @@ VolumeSliders::VolumeSliders(TexturizeAudioProcessor& p) : audioProcessor(p)
 
     //wet slider
     mWetSlider.setSliderStyle(juce::Slider::LinearVertical);
-    mWetSlider.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    mWetSlider.setTextBoxStyle(juce::Slider::TextBoxAbove, true, 50, 20);
+    mWetSlider.setTextValueSuffix("dB");
     addAndMakeVisible(mWetSlider);
     mWetLabel.setFont(mFontSize);
     mWetLabel.setText("Wet", juce::NotificationType::dontSendNotification);
@@ -46,21 +48,16 @@ VolumeSliders::~VolumeSliders()
 
 void VolumeSliders::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::green);
-
-    int textWidth{ 100 };
-    int textHeight{ 50 };
-
     g.setFont(30.f);
     g.setColour(juce::Colours::white);
     g.drawText("Output", getWidth() / 2 - textWidth / 2, mBorder / 2, textWidth, textHeight, juce::Justification::centred);
-
 }
 
 void VolumeSliders::resized()
 {
-    /*
-    mDrySlider.setBounds(0, mFontSize + 10, 100, getHeight() - mFontSize);
-    mWetSlider.setBounds(getWidth() - 100, mFontSize + 10, 100, getHeight() - mFontSize);
-    */
+    int width{ 50 };
+    mDrySlider.setBounds(getWidth() / 3 - width / 2, 
+        mFontSize + mBorder + textHeight, width, getHeight() - (mFontSize + mBorder * 2 + textHeight));
+    mWetSlider.setBounds(getWidth() / 3 * 2 - width / 2,
+        mFontSize + mBorder + textHeight, width, getHeight() - (mFontSize + mBorder * 2 + textHeight));
 }

@@ -37,18 +37,19 @@ void LevelMeters::paint (juce::Graphics& g)
     g.drawText("Input", getWidth()/2 -textWidth/2, mBorder/2, textWidth, textHeight, juce::Justification::centred);
 
     const auto sliderPos = getHeight() - juce::jmap<float>(
-        mThresholdSlider.getValue(), -60.f, +6.f, (mBorder + textHeight), static_cast<float>(getHeight() - (mBorder + textHeight)));
+        mThresholdSlider.getValue(), -60.f, +6.f, mBorder, static_cast<float>(getHeight() - (mBorder + textHeight)));
 
     auto bounds = getLocalBounds().toFloat();
     bounds.removeFromRight((getWidth() - mWidth) / 2);
     bounds.removeFromLeft((getWidth() - mWidth) / 2);
     bounds.removeFromTop(mBorder + textHeight);
-    bounds.removeFromBottom(mBorder + textHeight);
+    bounds.removeFromBottom(mBorder);
 
     g.setColour(juce::Colours::white.withBrightness(0.4f));
     g.fillRect(bounds);
 
-    const auto scaledY = juce::jmap<float>(audioProcessor.getRMSLevel(), -60.f, +6.f, mBorder + textHeight, static_cast<float>(getHeight() - mBorder));
+    const auto scaledY = juce::jmap<float>(
+        audioProcessor.getRMSLevel(), -60.f, +6.f, mBorder, static_cast<float>(getHeight() - (mBorder + textHeight)));
     
     if (scaledY <= getHeight() - sliderPos)
     {
@@ -73,5 +74,5 @@ void LevelMeters::paint (juce::Graphics& g)
 
 void LevelMeters::resized()
 {
-    mThresholdSlider.setBounds((getWidth() - mWidth) / 2, mBorder + textHeight, mWidth, getHeight() - (mBorder + textHeight) *2 );
+    mThresholdSlider.setBounds((getWidth() - mWidth) / 2, mBorder + textHeight, mWidth, getHeight() - (mBorder *2 + textHeight));
 }
