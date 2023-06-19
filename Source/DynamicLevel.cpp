@@ -16,9 +16,9 @@ DynamicLevel::DynamicLevel(TexturizeAudioProcessor& p) : audioProcessor(p)
 {
 	const float fontSize{ 20.0f };
 
-	//Att.
 	mDynamicLevelSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
 	mDynamicLevelSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 40, 20);
+	mDynamicLevelSlider.setEnabled(false);
 	addAndMakeVisible(mDynamicLevelSlider);
 	mDynamicLevelLabel.setFont(fontSize);
 	mDynamicLevelLabel.setText("Intensity", juce::NotificationType::dontSendNotification);
@@ -27,7 +27,8 @@ DynamicLevel::DynamicLevel(TexturizeAudioProcessor& p) : audioProcessor(p)
 	mDynamicLevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
 		audioProcessor.getAPVTS(), "DYN_INT", mDynamicLevelSlider);
 
-	mSetDynamicButton.setButtonText("Dynamic");
+	mSetDynamicButton.setButtonText("Set dynamic level");
+	mSetDynamicButton.onClick = [this] { sliderState(mSetDynamicButton.getToggleState()); };
 	addAndMakeVisible(mSetDynamicButton);
 	mSetDynamicAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
 		audioProcessor.getAPVTS(), "DYN_SET", mSetDynamicButton);
@@ -39,16 +40,19 @@ DynamicLevel::~DynamicLevel()
 
 void DynamicLevel::paint (juce::Graphics& g)
 {
-	g.fillAll(juce::Colours::yellow);
 }
 
 void DynamicLevel::resized()
 {
-	/*
-	const int size{100};
 	const int border{ 30 };
-	mDynamicLevelSlider.setBounds(0, 100, size, size);
+	const int sliderSize{175};
+	mDynamicLevelSlider.setBounds(getWidth() / 2 - sliderSize / 2, getHeight() - sliderSize - border / 2, sliderSize, sliderSize);
 
-	mSetDynamicButton.setBounds(0, 0, size, size / 2);
-	*/
+	const int buttonWidth{ getWidth() - border};
+	mSetDynamicButton.setBounds(border/2, border / 2, buttonWidth, 30);
+}
+
+void DynamicLevel::sliderState(bool state)
+{
+	mDynamicLevelSlider.setEnabled(state);
 }

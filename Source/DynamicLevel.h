@@ -25,6 +25,8 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void DynamicLevel::sliderState(bool state);
+
 private:
     juce::Slider mDynamicLevelSlider;
     juce::ToggleButton mSetDynamicButton;

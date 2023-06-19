@@ -70,6 +70,8 @@ public:
 	std::atomic<int>& getSampleCount() { return mSampleCount; }
 
 	float& getRMSLevel() { return mRMSLevel; }
+	
+
 
 private:
 	juce::Synthesiser mSampler;
